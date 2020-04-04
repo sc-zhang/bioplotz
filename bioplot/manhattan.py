@@ -9,7 +9,7 @@ __all__ = ["manhattan"]
 
 
 class _Manhattan(object):
-	def __init__(self, data, threshold=0.05, value_type="p-value", color=['orange', 'green'], threshold_line_color='blue', log_base=2, plus_minus=False, xticklabels=True, yticklabels=True):
+	def __init__(self, data, threshold=0.05, value_type="P-value", color=['orange', 'green'], threshold_line_color='blue', log_base=2, plus_minus=False, xticklabels=True, yticklabels=True):
 		if log_base < 0:
 			raise ValueError("log base must be greater than or equal 0")
 		'''
@@ -19,45 +19,44 @@ class _Manhattan(object):
 			{'chr': {'x': [], 'y': []}}
 			[[], []]
 		'''
+		base = 0
+		columns = []
+		x_ticks = []
+		'''
+		Convert data to common data
+		'''
 		if isinstance(data, pd.DataFrame):
-			continue
+			
 		elif isinstance(data, dict):
-			base = 0
-			columns = sorted(data)
-			if '-'.join(sorted(columns)).lower() == 'x-y':
-				if not isinstance(data[columns[0]], list):
-					raise ValueError("Data must be two list for x values and y values")
-				for key in columns:
-					if key.lower() == 'y' and log_base != 0:
-						data[key] = np.log(data[key])/np.log(log_base)		
-			elif isinstance(data[columns[0]], list):
-				for key in columns:
-					if not isinstance(data[key][0], list):
-						raise ValueError("Data must be two list for x values and y values")
-					data[key][0] = np.add(data[key][0], base)
-					base = max(data[key][0])
-					if log_base != 0:
-						data[key][1] = np.log(data[key][1])/np.log(log_base)
-			elif isinstance(data[columns[0]], dict):
-				for key in columns:
-					if len(data[key]) != 2 or '-'.join(sorted(data[key])).lower() != 'x-y':
-						raise KeyError("Keys must be 'X/x' and 'Y/y'")
-					for sub_key in data[key]:
-						if sub_key.lower() == 'x':
-							data[key][sub_key] = np.add(data[key][sub_key], base)
-							base = max(data[key][sub_key])
-						else:
-							if log_base != 0:
-								data[key][sub_key] = np.log(data[key][sub_key])/np.log(log_base)
-			else:
-				raise ValueError("Unsupport data type")
-			data = pd.DataFrame(data, columns=columns)
+
 		elif isinstance(data, list):
-			if not isinstance(data[0], list):
-				raise ValueError("Data must be two list for x values and y values")
-			if log_base != 0:
-				data[1] = np.log(data[1])/np.log(log_base)
+
 		else:
 			raise ValueError("Unsupport data type")
+		
+		self.data = data
+		self.xmax = base
+		self.x_ticks = x_ticks
+		self.x_labels = columns
+		self.threshold = threshold
+		self.value_type = value_type
+		self.color = color
+		self.threshold_line_color = threshold_line_color
+		self.plus_minus = plus_minus
+		self.xticklabels = xticklabels
+		self.yticklabels = yticklabels
 
-			
+	def plot(self, ax, kws):
+		ax.set(xlim=(0, self.xmax))
+		if self.xticklabels:
+			if self.x_ticks != []:
+				ax.set(xticks=self.xticks)
+				ax.set_xticklabels(self.x_labels)
+		else:
+			ax.set_xticklabels([])
+		
+		if not yticklabels:
+			ax.set_yticklabels([])
+		
+
+		
