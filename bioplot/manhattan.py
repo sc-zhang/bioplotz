@@ -68,13 +68,14 @@ class _Manhattan(object):
 					y_values['minus'].append(y)
 				else:
 					y_values['plus'].append(y)
+			idx = int(len(tmp_y)*th)
 			for th in threshold:
 				for type in y_values:
 					if type == 'minus':
 						y_values[type] = sorted(y_values[type])
 					else:
 						y_values[type] = sorted(y_values[type], reverse=True)
-					idx = len(y_values[type])*th
+					
 					threshold_values[type][th] = y_values[type][idx]
 		else:
 			threshold_values = {}
