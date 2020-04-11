@@ -185,4 +185,4 @@ def manhattan(data, threshold=0.05, color=['orange', 'green'],
 		ax = plt.gca()
 	plotter.plot(ax)
 
-	return ax
+	return ax, plotter.threshold_values
