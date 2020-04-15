@@ -9,7 +9,7 @@ __all__ = ["manhattan"]
 
 
 class _Manhattan(object):
-	def __init__(self, data, threshold=0.05, color=['orange', 'green'], threshold_line_color='blue', log_base=2, plus_minus=False, xticklabels=True, yticklabels=True):
+	def __init__(self, data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=2, xticklabels=True, yticklabels=True):
 		if log_base < 0:
 			raise ValueError("log base must be greater than or equal 0")
 		columns = []
@@ -60,32 +60,6 @@ class _Manhattan(object):
 		if not isinstance(threshold, list):
 			threshold = [threshold]
 		
-		if plus_minus:
-			threshold_values = {'plus': {}, 'minus': {}}
-			y_values = {'plus': [], 'minus': []}
-			for y in tmp_y:
-				if y < 0:
-					y_values['minus'].append(y)
-				else:
-					y_values['plus'].append(y)
-			idx = int(len(tmp_y)*th)
-			for th in threshold:
-				for type in y_values:
-					if type == 'minus':
-						y_values[type] = sorted(y_values[type])
-					else:
-						y_values[type] = sorted(y_values[type], reverse=True)
-					
-					threshold_values[type][th] = y_values[type][idx]
-		else:
-			threshold_values = {}
-			if max(tmp_y) < 0:
-				y_values = sorted(tmp_y)
-			else:
-				y_values = sorted(tmp_y, reverse=True)
-			for th in threshold:
-				idx = int(len(y_values)*th)
-				threshold_values[th] = y_values[idx]
 		if not isinstance(threshold_line_color, list):
 			threshold_line_color = [threshold_line_color]
 		
@@ -96,18 +70,15 @@ class _Manhattan(object):
 		y_max = max(tmp_y)
 		self.ymin = y_min
 		self.ymax = y_max		
-		if not plus_minus:
-			if max(tmp_y) < 0:
-				y_max = 0
-			else:
+		if y_max < 0:
+			y_max = 0
+		if y_min > 0:
 				y_min = 0
 		self.ylim = (y_min, y_max)
 		self.x_ticks = x_ticks
 		self.x_labels = columns
 		self.color = color
-		self.plus_minus = plus_minus
 		self.threshold = threshold
-		self.threshold_values = threshold_values
 		self.threshold_line_color = threshold_line_color
 		self.xticklabels = xticklabels
 		self.yticklabels = yticklabels
@@ -152,17 +123,13 @@ class _Manhattan(object):
 					x = max(data[col][0])
 					ax.plot([x, x], [self.ymin, self.ymax], color='lightgrey', linewidth=0.8, linestyle=':')
 
+		ax.plot([0, self.xmax], [0, 0], color='lightgrey', linewidth=0.5)
 		#Plot thresholds
 		color_cnt = len(self.threshold_line_color)
 		for i in range(0, len(self.threshold)):
 			th = self.threshold[i]
 			color_idx = i%color_cnt
-			if self.plus_minus:
-				ax.plot([0, self.xmax], [0, 0], color='lightgrey', linewidth=0.5)
-				for type in self.threshold_values:
-					ax.plot([0, self.xmax], [self.threshold_values[type][th], self.threshold_values[type][th]], color=self.threshold_line_color[color_idx], linewidth=0.8, linestyle=':')
-			else:
-				ax.plot([0, self.xmax], [self.threshold_values[th], self.threshold_values[th]], color=self.threshold_line_color[color_idx], linewidth=0.8, linestyle=':')
+			ax.plot([0, self.xmax], [th, th], color=self.threshold_line_color[color_idx], linewidth=0.8, linestyle=':')
 
 		ax.spines['top'].set_linewidth(0.5)
 		ax.spines['top'].set_color('lightgrey')
@@ -176,13 +143,13 @@ class _Manhattan(object):
 
 def manhattan(data, threshold=0.05, color=['orange', 'green'], 
               threshold_line_color='blue', log_base=2, 
-			  plus_minus=False, xticklabels=True, yticklabels=True, ax=None):
+			  xticklabels=True, yticklabels=True, ax=None):
 
 	plotter = _Manhattan(data, threshold, color, threshold_line_color, 
-	                     log_base, plus_minus, xticklabels, yticklabels)
+	                     log_base, xticklabels, yticklabels)
 	
 	if ax is None:
 		ax = plt.gca()
 	plotter.plot(ax)
 
-	return ax, plotter.threshold_values
+	return ax
