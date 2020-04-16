@@ -98,7 +98,7 @@ class _Manhattan(object):
 		self.xticklabels = xticklabels
 		self.yticklabels = yticklabels
 
-	def plot(self, ax, kws):
+	def plot(self, ax, marker, s, kws):
 		data = self.data
 		ax.set(xlim=self.xlim)
 
@@ -120,15 +120,14 @@ class _Manhattan(object):
 				color = self.color[0]
 			else:
 				color = self.color
-			ax.scatter(data[0], data[1], color=color, **kws)
-			ax.tick_params(axis='both', which='both',length=0)
+			ax.scatter(data[0], data[1], color=color, marker=marker, s=s, **kws)
 		else:
 			if isinstance(self.color, list):
 				color_cnt = len(self.color)
 				for i in range(0, len(self.x_labels)):
 					col = self.x_labels[i]
 					color_idx = i%color_cnt
-					ax.scatter(data[col][0], data[col][1], color=self.color[color_idx], **kws)
+					ax.scatter(data[col][0], data[col][1], color=self.color[color_idx], marker=marker, s=s, **kws)
 					if color_cnt == 1:
 						x = max(data[col][0])
 						ax.plot([x, x], [self.ymin, self.ymax], color='lightgrey', linewidth=0.8, linestyle=':')
@@ -156,17 +155,18 @@ class _Manhattan(object):
 		ax.spines['left'].set_color('lightgrey')
 		ax.spines['right'].set_linewidth(0.5)
 		ax.spines['right'].set_color('lightgrey')
-		
+
 
 def manhattan(data, threshold=0, color=['orange', 'green'], 
               threshold_line_color='blue', log_base=0, reverse=False, 
-			  xticklabels=True, yticklabels=True, ax=None, **kwargs):
+			  xticklabels=True, yticklabels=True, ax=None, marker='.',
+			  s=1, **kwargs):
 
 	plotter = _Manhattan(data, threshold, color, threshold_line_color,
 	                     log_base, reverse, xticklabels, yticklabels)
 	
 	if ax is None:
 		ax = plt.gca()
-	plotter.plot(ax, kwargs)
+	plotter.plot(ax, marker, s, kwargs)
 
 	return ax
