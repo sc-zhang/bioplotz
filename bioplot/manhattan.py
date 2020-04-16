@@ -59,12 +59,13 @@ class _Manhattan(object):
 		
 		if not isinstance(threshold, list):
 			threshold = np.array([threshold])
-			if log_base != 0:
-				threshold = np.log(threshold)/np.log(log_base)
 		else:
 			threshold = np.array(threshold)
-		if reverse:
-			threshold = -threshold
+		
+		if log_base != 0:
+			threshold = np.log(threshold)/np.log(log_base)
+			if reverse:
+				threshold = -threshold
 		
 		if not isinstance(threshold_line_color, list):
 			threshold_line_color = [threshold_line_color]
@@ -79,7 +80,7 @@ class _Manhattan(object):
 		if y_max < 0:
 			y_max = 0
 		if y_min > 0:
-				y_min = 0
+			y_min = 0
 		self.ylim = (y_min, y_max)
 		self.x_ticks = x_ticks
 		self.x_labels = columns
