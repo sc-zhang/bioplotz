@@ -9,7 +9,7 @@ __all__ = ["manhattan"]
 
 
 class _Manhattan(object):
-	def __init__(self, data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=2, reverse=True, xticklabels=True, yticklabels=True):
+	def __init__(self, data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=0, reverse=False, xticklabels=True, yticklabels=True):
 		if log_base < 0:
 			raise ValueError("log base must be greater than or equal 0")
 		columns = []
@@ -28,6 +28,8 @@ class _Manhattan(object):
 				x_max = max(data[0])
 				if log_base != 0:
 					data[1] = -np.log(data[1])/np.log(log_base)
+				if reverse:
+					data[1] = -data[1]
 				tmp_y.extend(data[1])
 			else:
 				for col in columns:
@@ -35,7 +37,9 @@ class _Manhattan(object):
 					x_ticks.append((max(data[col][0])-x_max)/2+x_max)
 					x_max = max(data[col][0])
 					if log_base != 0:
-						data[col][1] = -np.log(data[col][1])/np.log(log_base)
+						data[col][1] = np.log(data[col][1])/np.log(log_base)
+					if reverse:
+						data[col][1] = -data[col][1]
 					tmp_y.extend(data[col][1])
 		elif isinstance(data, dict):
 			columns = sorted(data)
@@ -45,14 +49,18 @@ class _Manhattan(object):
 				x_ticks.append((max(data[col][0])-x_max)/2+x_max)
 				x_max = max(data[col][0])
 				if log_base != 0:
-					data[col][1] = -np.log(data[col][1])/np.log(log_base)
+					data[col][1] = np.log(data[col][1])/np.log(log_base)
+				if reverse:
+					data[col][1] = -data[col][1]
 				tmp_y.extend(data[col][1])
 		elif isinstance(data, list) or isinstance(data, np.ndarray):
 			columns = []
 			data = pd.DataFrame(data)
 			x_max = max(data[0])
 			if log_base != 0:
-				data[1] = -np.log(data[1])/np.log(log_base)
+				data[1] = np.log(data[1])/np.log(log_base)
+			if reverse:
+				data[1] = -data[1]
 			tmp_y.extend(data[1])
 		else:
 			raise ValueError("Unsupport data type")
@@ -64,8 +72,8 @@ class _Manhattan(object):
 		
 		if log_base != 0:
 			threshold = np.log(threshold)/np.log(log_base)
-			if reverse:
-				threshold = -threshold
+		if reverse:
+			threshold = -threshold
 		
 		if not isinstance(threshold_line_color, list):
 			threshold_line_color = [threshold_line_color]
@@ -151,7 +159,7 @@ class _Manhattan(object):
 		
 
 def manhattan(data, threshold=0, color=['orange', 'green'], 
-              threshold_line_color='blue', log_base=2, reverse=True, 
+              threshold_line_color='blue', log_base=0, reverse=False, 
 			  xticklabels=True, yticklabels=True, ax=None, **kwargs):
 
 	plotter = _Manhattan(data, threshold, color, threshold_line_color,
