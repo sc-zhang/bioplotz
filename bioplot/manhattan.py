@@ -11,7 +11,7 @@ __all__ = ["manhattan"]
 class _Manhattan(object):
 	def __init__(self, data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=0, reverse=False, xticklabels=True, yticklabels=True):
 		if log_base < 0:
-			raise ValueError("log base must be greater than or equal 0")
+			raise ValueError("log base must be greater than or equal to 0")
 		columns = []
 		x_ticks = []
 		x_max = 0
