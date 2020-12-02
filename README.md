@@ -4,9 +4,9 @@ This is a package for plotting some images for bioinformatics.
 
 ## Dependencies
 Python modules:
-&ensp;&ensp;&ensp;&ensp;numpy
-&ensp;&ensp;&ensp;&ensp;matplotlib
-&ensp;&ensp;&ensp;&ensp;pandas
+&ensp;&ensp;&ensp;&ensp;numpy  
+&ensp;&ensp;&ensp;&ensp;matplotlib  
+&ensp;&ensp;&ensp;&ensp;pandas  
 
 ## Usage
 
