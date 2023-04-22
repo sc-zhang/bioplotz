@@ -64,7 +64,7 @@ class _Manhattan(object):
                 data[1] = -data[1]
             tmp_y.extend(data[1])
         else:
-            raise ValueError("Unsupport __data type")
+            raise ValueError("Unsupport data type")
 
         if not isinstance(threshold, list):
             threshold = np.array([threshold])
