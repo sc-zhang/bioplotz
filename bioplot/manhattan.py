@@ -20,7 +20,7 @@ class _Manhattan(object):
         if not color:
             color = ['orange', 'green']
         '''
-        Convert data to pd.DataFrame
+        Convert __data to pd.DataFrame
         '''
         if isinstance(data, pd.DataFrame):
             columns = list(data.columns)
@@ -64,7 +64,7 @@ class _Manhattan(object):
                 data[1] = -data[1]
             tmp_y.extend(data[1])
         else:
-            raise ValueError("Unsupport data type")
+            raise ValueError("Unsupport __data type")
 
         if not isinstance(threshold, list):
             threshold = np.array([threshold])
@@ -79,73 +79,73 @@ class _Manhattan(object):
         if not isinstance(threshold_line_color, list):
             threshold_line_color = [threshold_line_color]
 
-        self.data = data
-        self.xlim = (0, x_max)
-        self.xmax = x_max
+        self.__data = data
+        self.__xlim = (0, x_max)
+        self.__xmax = x_max
         y_min = min(tmp_y)
         y_max = max(tmp_y)
-        self.ymin = y_min
-        self.ymax = y_max
+        self.__ymin = y_min
+        self.__ymax = y_max
         if y_max < 0:
             y_max = 0
         if y_min > 0:
             y_min = 0
-        self.ylim = (y_min, y_max)
-        self.x_ticks = x_ticks
-        self.x_labels = columns
-        self.color = color
-        self.threshold = threshold
-        self.threshold_line_color = threshold_line_color
-        self.xtick_labels = xtick_labels
-        self.ytick_labels = ytick_labels
+        self.__ylim = (y_min, y_max)
+        self.__x_ticks = x_ticks
+        self.__x_labels = columns
+        self.__color = color
+        self.__threshold = threshold
+        self.__threshold_line_color = threshold_line_color
+        self.__xtick_labels = xtick_labels
+        self.__ytick_labels = ytick_labels
 
     def plot(self, ax, marker, s, kws):
-        data = self.data
-        ax.set(xlim=self.xlim)
+        data = self.__data
+        ax.set(xlim=self.__xlim)
 
-        if len(self.ylim) != 0:
-            ax.set(ylim=self.ylim)
-        if self.xtick_labels:
-            if self.x_ticks:
-                ax.set(xticks=self.x_ticks)
-                ax.set_xticklabels(self.x_labels)
+        if len(self.__ylim) != 0:
+            ax.set(ylim=self.__ylim)
+        if self.__xtick_labels:
+            if self.__x_ticks:
+                ax.set(xticks=self.__x_ticks)
+                ax.set_xticklabels(self.__x_labels)
         else:
             ax.set_xticklabels([])
 
-        if not self.ytick_labels:
+        if not self.__ytick_labels:
             ax.set_yticklabels([])
 
         # Plot scatter of values
-        if not self.x_labels:
-            if isinstance(self.color, list):
-                color = self.color[0]
+        if not self.__x_labels:
+            if isinstance(self.__color, list):
+                color = self.__color[0]
             else:
-                color = self.color
+                color = self.__color
             ax.scatter(data[0], data[1], color=color, marker=marker, s=s, **kws)
         else:
-            if isinstance(self.color, list):
-                color_cnt = len(self.color)
-                for i in range(0, len(self.x_labels)):
-                    col = self.x_labels[i]
+            if isinstance(self.__color, list):
+                color_cnt = len(self.__color)
+                for i in range(0, len(self.__x_labels)):
+                    col = self.__x_labels[i]
                     color_idx = i % color_cnt
-                    ax.scatter(data[col][0], data[col][1], color=self.color[color_idx], marker=marker, s=s, **kws)
+                    ax.scatter(data[col][0], data[col][1], color=self.__color[color_idx], marker=marker, s=s, **kws)
                     if color_cnt == 1:
                         x = max(data[col][0])
-                        ax.plot([x, x], [self.ymin, self.ymax], color='lightgrey', linewidth=0.8, linestyle=':')
+                        ax.plot([x, x], [self.__ymin, self.__ymax], color='lightgrey', linewidth=0.8, linestyle=':')
             else:
-                for col in self.x_labels:
-                    ax.scatter(data[col][0], data[col][1], color=self.color, **kws)
+                for col in self.__x_labels:
+                    ax.scatter(data[col][0], data[col][1], color=self.__color, **kws)
                     x = max(data[col][0])
-                    ax.plot([x, x], [self.ymin, self.ymax], color='lightgrey', linewidth=0.8, linestyle=':')
+                    ax.plot([x, x], [self.__ymin, self.__ymax], color='lightgrey', linewidth=0.8, linestyle=':')
 
-        ax.plot([0, self.xmax], [0, 0], color='lightgrey', linewidth=0.5)
+        ax.plot([0, self.__xmax], [0, 0], color='lightgrey', linewidth=0.5)
         # Plot thresholds
-        if not (len(self.threshold) == 1 and self.threshold[0] == 0):
-            color_cnt = len(self.threshold_line_color)
-            for i in range(0, len(self.threshold)):
-                th = self.threshold[i]
+        if not (len(self.__threshold) == 1 and self.__threshold[0] == 0):
+            color_cnt = len(self.__threshold_line_color)
+            for i in range(0, len(self.__threshold)):
+                th = self.__threshold[i]
                 color_idx = i % color_cnt
-                ax.plot([0, self.xmax], [th, th], color=self.threshold_line_color[color_idx], linewidth=0.8,
+                ax.plot([0, self.__xmax], [th, th], color=self.__threshold_line_color[color_idx], linewidth=0.8,
                         linestyle=':')
 
         ax.tick_params(axis='both', which='both', length=0)
