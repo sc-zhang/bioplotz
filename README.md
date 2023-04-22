@@ -17,7 +17,6 @@ import bioplot.manhattan as mh
 
 man_plot = mh.manhattan(data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=0,
                         reverse=False, xtick_labels=True, ytick_labels=True, ax=None, marker='.', s=1, **kwargs)
-man_plot.plot()
 ```
 |parameter|value type|explain|
 |----|----|----|
@@ -29,3 +28,18 @@ man_plot.plot()
 |**reverse**|Boolean|if all data lower than 0, you may use it to show opposite values|
 |**other parameters**|value|same with parameters used in **pyplot.scatter**|
 
+### Manhanttan Plot
+
+```python
+import bioplot.chromosome as chrp
+
+chr_plot = chrp.manhattan(chr_len, bed_data, centro_pos, byval)
+```
+| parameter      | value type | explain                                                                                                |
+|----------------|------------|--------------------------------------------------------------------------------------------------------|
+| **chr_len**    | Directory  | **key**: chromosome name<br>**value**: chromosome length                                               |
+| **bed_data**   | list       | **list**: two dimension list, like: [[chrome name, start pos, end pos, value/color]]                   |
+| **centro_pos** | Directory  | **key**: chromosome name<br>**value**: middle position of centromere                                   |
+| **byval**      | boolean    | **True**: the 4th column of bed_data should be value<br>**False**: the 4th column of bed_data is color |
+
+If byval is True, the return value is (ax, colorbar), otherwise (ax, None)
