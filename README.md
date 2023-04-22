@@ -15,7 +15,8 @@ Python modules:
 ```python
 import bioplot.manhattan as mh
 
-man_plot = mh.manhattan(data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=0, reverse=False, xticklabels=True, yticklabels=True, ax=None, marker='.', s=1, **kwargs)
+man_plot = mh.manhattan(data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=0,
+                        reverse=False, xtick_labels=True, ytick_labels=True, ax=None, marker='.', s=1, **kwargs)
 man_plot.plot()
 ```
 |parameter|value type|explain|
