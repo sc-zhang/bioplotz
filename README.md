@@ -28,12 +28,12 @@ man_plot = mh.manhattan(data, threshold=0, color=['orange', 'green'], threshold_
 |**reverse**|Boolean|if all data lower than 0, you may use it to show opposite values|
 |**other parameters**|value|same with parameters used in **pyplot.scatter**|
 
-### Manhanttan Plot
+### Chromosome Plot
 
 ```python
 import bioplot.chromosome as chrp
 
-chr_plot = chrp.manhattan(chr_len, bed_data, centro_pos, byval)
+chr_plot = chrp.chromosome(chr_len, bed_data, centro_pos, byval)
 ```
 | parameter      | value type | explain                                                                                                |
 |----------------|------------|--------------------------------------------------------------------------------------------------------|
