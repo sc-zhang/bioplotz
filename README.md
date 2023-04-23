@@ -33,7 +33,7 @@ man_plot = mh.manhattan(data, threshold=0, color=['orange', 'green'], threshold_
 ```python
 import bioplot.chromosome as chrp
 
-chr_plot = chrp.chromosome(chr_len, bed_data, centro_pos, value_type="numeric", orientation="vertical", "**kwargs)
+chr_plot = chrp.chromosome(chr_len, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
 ```
 | parameter            | value type                     | Optional | explain                                                                                                                                                                                                                                   |
 |----------------------|--------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
