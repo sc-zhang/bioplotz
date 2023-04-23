@@ -26,7 +26,9 @@ class _Chromosome(object):
         return x, y
 
     def plot(self, ax, fig, kwargs):
-
+        if self.__orientation != "vertical" and self.__orientation != "horizontal":
+            print("Warning: orientation must be \"vertical\" or \"horizontal\", reset to \"vertical\"")
+            self.__orientation = "vertical"
         for i in ax.spines:
             ax.spines[i].set_visible(False)
         ax.tick_params('both', length=0)
@@ -39,7 +41,10 @@ class _Chromosome(object):
 
         # Plot chromosomes
         fig_w, fig_h = fig.get_size_inches() * fig.dpi
-        ratio = max_height * 1. / chr_cnt * (fig_w * 1. / fig_h)
+        if self.__orientation == 'horizontal':
+            ratio = max_height * 1. / chr_cnt * (fig_h * 1. / fig_w)
+        else:
+            ratio = max_height * 1. / chr_cnt * (fig_w * 1. / fig_h)
         for i in range(chr_cnt):
             chrn = chr_list[i]
             x = i + 0.5
