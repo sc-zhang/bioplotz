@@ -10,14 +10,19 @@ class _Chromosome(object):
                  chr_order: list = None,
                  bed_data: list = None,
                  centro_db: dict = None,
-                 byval: bool = True,
+                 value_type: str = "numeric",
                  orientation: str = "vertical"):
 
         self.__chr_len_db = chr_len_db
         self.__chr_order = chr_order
         self.__bed_data = bed_data
         self.__centro_db = centro_db
-        self.__byval = byval
+        self.__value_type = value_type.lower()
+        self.__avail_types = {'numeric', 'color', 'marker'}
+
+        if self.__value_type not in self.__avail_types:
+            raise ValueError("value_type must in %s" % ','.join(list(self.__avail_types)))
+
         self.__orientation = orientation
 
     # pos: 0~3, means top_right, top_left, buttom_left, buttom_right
@@ -169,7 +174,8 @@ class _Chromosome(object):
         if not self.__bed_data:
             return None
 
-        if self.__byval:
+        chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
+        if self.__value_type == 'numeric':
             # Init colormap
             max_val = None
             min_val = None
@@ -183,7 +189,6 @@ class _Chromosome(object):
             mapper.set_array(np.arange(min_val, max_val, 0.1))
 
             # Plot regions
-            chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
             for chrn, sp, ep, val in self.__bed_data:
                 x = chr_idx_db[chrn] - 0.35
                 y = sp
@@ -196,8 +201,7 @@ class _Chromosome(object):
                 ax.add_patch(
                     plt.Rectangle((x, y), w, h, facecolor=color, edgecolor='none'))
             clb = plt.colorbar(mapper, shrink=0.5)
-        else:
-            chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
+        elif self.__value_type == 'color':
             for chrn, sp, ep, color in self.__bed_data:
                 x = chr_idx_db[chrn] - 0.35
                 y = sp
@@ -208,7 +212,14 @@ class _Chromosome(object):
                     w, h = h, w
                 ax.add_patch(
                     plt.Rectangle((x, y), w, h, facecolor=color, edgecolor='none'))
-
+        elif self.__value_type == 'marker':
+            for chrn, sp, ep, marker, color in self.__bed_data:
+                x = chr_idx_db[chrn] - 0.35
+                y = sp
+                if self.__orientation == 'horizontal':
+                    x, y = y, x
+                ax.add_patch(
+                    plt.scatter(x, y, color=color, marker=marker))
         return clb
 
 
@@ -216,11 +227,11 @@ def chromosome(chr_len_db: dict,
                chr_order: list = None,
                bed_data: list = None,
                centro_db: dict = None,
-               byval: bool = True,
+               value_type: str = "numeric",
                orientation: str = "vertical",
                **kwargs):
 
-    plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, byval, orientation)
+    plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, value_type, orientation)
 
     if not plt:
         plt.figure()
