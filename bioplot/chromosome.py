@@ -5,9 +5,16 @@ import numpy as np
 
 class _Chromosome(object):
 
-    def __init__(self, chr_len_db: dict, bed_data: list = None, centro_db: dict = None, byval: bool = True, 
+    def __init__(self,
+                 chr_len_db: dict,
+                 chr_order: list = None,
+                 bed_data: list = None,
+                 centro_db: dict = None,
+                 byval: bool = True,
                  orientation: str = "vertical"):
+
         self.__chr_len_db = chr_len_db
+        self.__chr_order = chr_order
         self.__bed_data = bed_data
         self.__centro_db = centro_db
         self.__byval = byval
@@ -46,7 +53,10 @@ class _Chromosome(object):
         else:
             ratio = max_height * 1. / chr_cnt * (fig_w * 1. / fig_h)
         for i in range(chr_cnt):
-            chrn = chr_list[i]
+            if self.__chr_order:
+                chrn = self.__chr_order[i]
+            else:
+                chrn = chr_list[i]
             x = i
             r = 0.35
 
@@ -202,9 +212,15 @@ class _Chromosome(object):
         return clb
 
 
-def chromosome(chr_len_db: dict, bed_data: list = None, centro_db: dict = None, byval: bool = True,
-               orientation: str = "vertical", **kwargs):
-    plotter = _Chromosome(chr_len_db, bed_data, centro_db, byval, orientation)
+def chromosome(chr_len_db: dict,
+               chr_order: list = None,
+               bed_data: list = None,
+               centro_db: dict = None,
+               byval: bool = True,
+               orientation: str = "vertical",
+               **kwargs):
+
+    plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, byval, orientation)
 
     if not plt:
         plt.figure()
