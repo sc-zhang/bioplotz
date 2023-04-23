@@ -4,9 +4,6 @@ import numpy as np
 import pandas as pd
 
 
-mpl.use('Agg')
-
-
 class _Manhattan(object):
     def __init__(self, data, threshold=0, color=None, threshold_line_color='blue', log_base=0,
                  reverse=False, xtick_labels=True, ytick_labels=True):
