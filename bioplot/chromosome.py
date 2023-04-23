@@ -11,7 +11,8 @@ class _Chromosome(object):
                  bed_data: list = None,
                  centro_db: dict = None,
                  value_type: str = "numeric",
-                 orientation: str = "vertical"):
+                 orientation: str = "vertical",
+                 s: any = None):
 
         self.__chr_len_db = chr_len_db
         self.__chr_order = chr_order
@@ -19,6 +20,7 @@ class _Chromosome(object):
         self.__centro_db = centro_db
         self.__value_type = value_type.lower()
         self.__avail_types = {'numeric', 'color', 'marker'}
+        self.__s = s
 
         if self.__value_type not in self.__avail_types:
             raise ValueError("value_type must in %s" % ','.join(list(self.__avail_types)))
@@ -218,7 +220,10 @@ class _Chromosome(object):
                 y = sp
                 if self.__orientation == 'horizontal':
                     x, y = y, x
-                plt.scatter(x, y, color=color, marker=marker)
+                if self.__s:
+                    plt.scatter(x, y, s=self.__s, color=color, marker=marker)
+                else:
+                    plt.scatter(x, y, color=color, marker=marker)
         return clb
 
 
@@ -228,9 +233,10 @@ def chromosome(chr_len_db: dict,
                centro_db: dict = None,
                value_type: str = "numeric",
                orientation: str = "vertical",
+               s: any = None,
                **kwargs):
 
-    plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, value_type, orientation)
+    plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, value_type, orientation, s)
 
     if not plt:
         plt.figure()
