@@ -218,8 +218,7 @@ class _Chromosome(object):
                 y = sp
                 if self.__orientation == 'horizontal':
                     x, y = y, x
-                ax.add_patch(
-                    plt.scatter(x, y, color=color, marker=marker))
+                plt.scatter(x, y, color=color, marker=marker)
         return clb
 
 
