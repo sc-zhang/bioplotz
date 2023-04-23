@@ -214,7 +214,7 @@ class _Chromosome(object):
                     plt.Rectangle((x, y), w, h, facecolor=color, edgecolor='none'))
         elif self.__value_type == 'marker':
             for chrn, sp, ep, marker, color in self.__bed_data:
-                x = chr_idx_db[chrn] - 0.35
+                x = chr_idx_db[chrn]
                 y = sp
                 if self.__orientation == 'horizontal':
                     x, y = y, x
