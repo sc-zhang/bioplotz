@@ -33,17 +33,17 @@ man_plot = mh.manhattan(data, threshold=0, color=['orange', 'green'], threshold_
 ```python
 import bioplot.chromosome as chrp
 
-chr_plot = chrp.chromosome(chr_len, bed_data, centro_pos, byval, orientation="vertical", "**kwargs)
+chr_plot = chrp.chromosome(chr_len, bed_data, centro_pos, value_type="numeric", orientation="vertical", "**kwargs)
 ```
-| parameter            | value type | Optional | explain                                                                                                 |
-|----------------------|------------|----------|---------------------------------------------------------------------------------------------------------|
-| **chr_len**          | Directory  | No       | **key**: chromosome name<br>**value**: chromosome length                                                |
-| **chr_order**        | list       | Yes      | **list**: the custom chromosome order, like: ["Chr1", "Chr3", "Chr2"]<br>must same with keys in chr_len |
-| **bed_data**         | list       | Yes      | **list**: two dimension list, like: [[chrome name, start pos, end pos, value/color]]                    |
-| **centro_pos**       | Directory  | Yes      | **key**: chromosome name<br>**value**: middle position of centromere                                    |
-| **byval**            | boolean    | Yes      | **True**: the 4th column of bed_data should be value<br>**False**: the 4th column of bed_data is color  |
-| **orientation**      | str        | Yes      | "vertical" or "horizontal"                                                                              |
-| **other parameters** | value      | Yes      | same with parameters used in **pyplot.plot**                                                            |
+| parameter            | value type | Optional | explain                                                                                                                                                                                                                                   |
+|----------------------|------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **chr_len**          | Directory  | No       | **key**: chromosome name<br>**value**: chromosome length                                                                                                                                                                                  |
+| **chr_order**        | list       | Yes      | **list**: the custom chromosome order, like: ["Chr1", "Chr3", "Chr2"]<br>must same with keys in chr_len                                                                                                                                   |
+| **bed_data**         | list       | Yes      | **list**: two dimension list, like: [[chrome name, start pos, end pos, value/color]]                                                                                                                                                      |
+| **centro_pos**       | Directory  | Yes      | **key**: chromosome name<br>**value**: middle position of centromere                                                                                                                                                                      |
+| **value_type**       | str        | Yes      | **numeric**: the 4th column of bed_data should be value<br>**color**: the 4th column of bed_data is color<br>**marker**: different with other two types, it need 5 columns, the 4th column of bed_data is marker, the 5th column is color |
+| **orientation**      | str        | Yes      | "vertical" or "horizontal"                                                                                                                                                                                                                |
+| **other parameters** | value      | Yes      | same with parameters used in **pyplot.plot**                                                                                                                                                                                              |
 
 - If byval is True, the return value is (ax, colorbar), otherwise (ax, None)
 - the bed_data can be None, and users can add marker by pyplot.scatter, if orientation is "vertical" then x means the 
