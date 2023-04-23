@@ -47,7 +47,7 @@ class _Chromosome(object):
             ratio = max_height * 1. / chr_cnt * (fig_w * 1. / fig_h)
         for i in range(chr_cnt):
             chrn = chr_list[i]
-            x = i + 0.5
+            x = i
             r = 0.35
 
             height = self.__chr_len_db[chrn]
@@ -138,7 +138,7 @@ class _Chromosome(object):
 
         xticks = []
         for i in range(chr_cnt):
-            xticks.append(i + 0.5)
+            xticks.append(i)
         xlabels = sorted(self.__chr_len_db)
 
         yticks = []
