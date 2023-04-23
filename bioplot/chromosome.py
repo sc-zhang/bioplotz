@@ -5,11 +5,12 @@ import numpy as np
 
 class _Chromosome(object):
 
-    def __init__(self, chr_len_db: dict, bed_data: list, centro_db: dict = None, byval: bool = True):
+    def __init__(self, chr_len_db: dict, bed_data: list, centro_db: dict = None, byval: bool = True, lw: int = 3):
         self.__chr_len_db = chr_len_db
         self.__bed_data = bed_data
         self.__centro_db = centro_db
         self.__byval = byval
+        self.__lw = lw
 
     # pos: 0~3, means top_right, top_left, buttom_left, buttom_right
     @staticmethod
@@ -47,26 +48,28 @@ class _Chromosome(object):
             # Draw two end arc
             for j in [2, 3]:
                 arc_x, arc_y = self.__generate_arc(r, [x, 0], j, ratio)
-                plt.plot(arc_x, arc_y, color='black', lw=1)
+                plt.plot(arc_x, arc_y, color='black', lw=self.__lw)
             for j in [0, 1]:
                 arc_x, arc_y = self.__generate_arc(r, [x, height], j, ratio)
-                plt.plot(arc_x, arc_y, color='black', lw=1)
+                plt.plot(arc_x, arc_y, color='black', lw=self.__lw)
 
             if self.__centro_db and chrn in self.__centro_db:
                 # if centromere found, draw it
-                plt.plot([x - 0.35, x - 0.35], [0, self.__centro_db[chrn] - r * ratio], color='black', lw=1)
-                plt.plot([x - 0.35, x - 0.35], [self.__centro_db[chrn] + r * ratio, height], color='black', lw=1)
-                plt.plot([x + 0.35, x + 0.35], [0, self.__centro_db[chrn] - r * ratio], color='black', lw=1)
-                plt.plot([x + 0.35, x + 0.35], [self.__centro_db[chrn] + r * ratio, height], color='black', lw=1)
+                plt.plot([x - 0.35, x - 0.35], [0, self.__centro_db[chrn] - r * ratio], color='black', lw=self.__lw)
+                plt.plot([x - 0.35, x - 0.35], [self.__centro_db[chrn] + r * ratio, height],
+                         color='black', lw=self.__lw)
+                plt.plot([x + 0.35, x + 0.35], [0, self.__centro_db[chrn] - r * ratio], color='black', lw=self.__lw)
+                plt.plot([x + 0.35, x + 0.35], [self.__centro_db[chrn] + r * ratio, height],
+                         color='black', lw=self.__lw)
                 for j in [2, 3]:
                     arc_x, arc_y = self.__generate_arc(r, [x, self.__centro_db[chrn] + r * ratio], j, ratio)
-                    plt.plot(arc_x, arc_y, color='black', lw=1)
+                    plt.plot(arc_x, arc_y, color='black', lw=self.__lw)
                 for j in [0, 1]:
                     arc_x, arc_y = self.__generate_arc(r, [x, self.__centro_db[chrn] - r * ratio], j, ratio)
-                    plt.plot(arc_x, arc_y, color='black', lw=1)
+                    plt.plot(arc_x, arc_y, color='black', lw=self.__lw)
             else:
-                plt.plot([x - 0.35, x - 0.35], [0, height], color='black', lw=1)
-                plt.plot([x + 0.35, x + 0.35], [0, height], color='black', lw=1)
+                plt.plot([x - 0.35, x - 0.35], [0, height], color='black', lw=self.__lw)
+                plt.plot([x + 0.35, x + 0.35], [0, height], color='black', lw=self.__lw)
 
         clb = None
         if self.__byval:
@@ -109,8 +112,8 @@ class _Chromosome(object):
         return clb
 
 
-def chromosome(chr_len_db: dict, bed_data: list, centro_db: dict = None, byval: bool = True):
-    plotter = _Chromosome(chr_len_db, bed_data, centro_db, byval)
+def chromosome(chr_len_db: dict, bed_data: list, centro_db: dict = None, byval: bool = True, lw: int = 3):
+    plotter = _Chromosome(chr_len_db, bed_data, centro_db, byval, lw)
 
     if not plt:
         plt.figure()
