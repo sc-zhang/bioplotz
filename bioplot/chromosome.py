@@ -5,12 +5,13 @@ import numpy as np
 
 class _Chromosome(object):
 
-    def __init__(self, chr_len_db: dict, bed_data: list, centro_db: dict = None, byval: bool = True, lw: int = 3):
+    def __init__(self, chr_len_db: dict, bed_data: list = None, centro_db: dict = None, byval: bool = True, 
+                 orientation: str = "vertical"):
         self.__chr_len_db = chr_len_db
         self.__bed_data = bed_data
         self.__centro_db = centro_db
         self.__byval = byval
-        self.__lw = lw
+        self.__orientation = orientation
 
     # pos: 0~3, means top_right, top_left, buttom_left, buttom_right
     @staticmethod
@@ -24,7 +25,8 @@ class _Chromosome(object):
             theta += 0.01
         return x, y
 
-    def plot(self, ax, fig):
+    def plot(self, ax, fig, kwargs):
+
         for i in ax.spines:
             ax.spines[i].set_visible(False)
         ax.tick_params('both', length=0)
@@ -48,30 +50,110 @@ class _Chromosome(object):
             # Draw two end arc
             for j in [2, 3]:
                 arc_x, arc_y = self.__generate_arc(r, [x, 0], j, ratio)
-                plt.plot(arc_x, arc_y, color='black', lw=self.__lw)
+                if self.__orientation == "horizontal":
+                    arc_x, arc_y = arc_y, arc_x
+                plt.plot(arc_x, arc_y, **kwargs)
             for j in [0, 1]:
                 arc_x, arc_y = self.__generate_arc(r, [x, height], j, ratio)
-                plt.plot(arc_x, arc_y, color='black', lw=self.__lw)
+                if self.__orientation == "horizontal":
+                    arc_x, arc_y = arc_y, arc_x
+                plt.plot(arc_x, arc_y, **kwargs)
 
             if self.__centro_db and chrn in self.__centro_db:
                 # if centromere found, draw it
-                plt.plot([x - 0.35, x - 0.35], [0, self.__centro_db[chrn] - r * ratio], color='black', lw=self.__lw)
-                plt.plot([x - 0.35, x - 0.35], [self.__centro_db[chrn] + r * ratio, height],
-                         color='black', lw=self.__lw)
-                plt.plot([x + 0.35, x + 0.35], [0, self.__centro_db[chrn] - r * ratio], color='black', lw=self.__lw)
-                plt.plot([x + 0.35, x + 0.35], [self.__centro_db[chrn] + r * ratio, height],
-                         color='black', lw=self.__lw)
+                x_start = x - 0.35
+                x_end = x - 0.35
+                y_start = 0
+                y_end = self.__centro_db[chrn] - r * ratio
+                if self.__orientation == "horizontal":
+                    x_start, y_start = y_start, x_start
+                    x_end, y_end = y_end, x_end
+                plt.plot([x_start, x_end], [y_start, y_end], **kwargs)
+
+                x_start = x - 0.35
+                x_end = x - 0.35
+                y_start = self.__centro_db[chrn] + r * ratio
+                y_end = height
+                if self.__orientation == "horizontal":
+                    x_start, y_start = y_start, x_start
+                    x_end, y_end = y_end, x_end
+                plt.plot([x_start, x_end], [y_start, y_end], **kwargs)
+
+                x_start = x + 0.35
+                x_end = x + 0.35
+                y_start = 0
+                y_end = self.__centro_db[chrn] - r * ratio
+                if self.__orientation == "horizontal":
+                    x_start, y_start = y_start, x_start
+                    x_end, y_end = y_end, x_end
+                plt.plot([x_start, x_end], [y_start, y_end], **kwargs)
+
+                x_start = x + 0.35
+                x_end = x + 0.35
+                y_start = self.__centro_db[chrn] + r * ratio
+                y_end = height
+                if self.__orientation == "horizontal":
+                    x_start, y_start = y_start, x_start
+                    x_end, y_end = y_end, x_end
+                plt.plot([x_start, x_end], [y_start, y_end], **kwargs)
+
                 for j in [2, 3]:
                     arc_x, arc_y = self.__generate_arc(r, [x, self.__centro_db[chrn] + r * ratio], j, ratio)
-                    plt.plot(arc_x, arc_y, color='black', lw=self.__lw)
+                    if self.__orientation == "horizontal":
+                        arc_x, arc_y = arc_y, arc_x
+                    plt.plot(arc_x, arc_y, **kwargs)
                 for j in [0, 1]:
                     arc_x, arc_y = self.__generate_arc(r, [x, self.__centro_db[chrn] - r * ratio], j, ratio)
-                    plt.plot(arc_x, arc_y, color='black', lw=self.__lw)
+                    if self.__orientation == "horizontal":
+                        arc_x, arc_y = arc_y, arc_x
+                    plt.plot(arc_x, arc_y, **kwargs)
             else:
-                plt.plot([x - 0.35, x - 0.35], [0, height], color='black', lw=self.__lw)
-                plt.plot([x + 0.35, x + 0.35], [0, height], color='black', lw=self.__lw)
+                x_start = x - 0.35
+                x_end = x - 0.35
+                y_start = 0
+                y_end = height
+                if self.__orientation == "horizontal":
+                    x_start, y_start = y_start, x_start
+                    x_end, y_end = y_end, x_end
+                plt.plot([x_start, x_end], [y_start, y_end], **kwargs)
+
+                x_start = x + 0.35
+                x_end = x + 0.35
+                y_start = 0
+                y_end = height
+                if self.__orientation == "horizontal":
+                    x_start, y_start = y_start, x_start
+                    x_end, y_end = y_end, x_end
+                plt.plot([x_start, x_end], [y_start, y_end], **kwargs)
+
+        # set default color
+        if not kwargs.get("color") and not kwargs.get("c"):
+            for line in ax.get_lines():
+                line.set_color("black")
+
+        xticks = []
+        for i in range(chr_cnt):
+            xticks.append(i + 0.5)
+        xlabels = sorted(self.__chr_len_db)
+
+        yticks = []
+        ylabels = []
+        # add label each Mb
+        for pos in range(0, int(max_height), int(1e6)):
+            yticks.append(pos)
+            ylabels.append("%.0fMb" % (pos / 1e6))
+
+        if self.__orientation == 'horizontal':
+            xticks, yticks = yticks, xticks
+            xlabels, ylabels = ylabels, xlabels
+        ax.set_xticks(xticks, xlabels, rotation=90 if self.__orientation == "vertical" else 0)
+        ax.set_yticks(yticks, ylabels)
 
         clb = None
+
+        if not self.__bed_data:
+            return None
+
         if self.__byval:
             # Init colormap
             max_val = None
@@ -88,35 +170,39 @@ class _Chromosome(object):
             # Plot regions
             chr_idx_db = {chr_list[_]: _ for _ in range(chr_cnt)}
             for chrn, sp, ep, val in self.__bed_data:
+                x = chr_idx_db[chrn] + 0.15
+                y = sp
+                w = .7
+                h = ep - sp + 1
+                if self.__orientation == 'horizontal':
+                    x, y = y, x
+                    w, h = h, w
                 color = mapper.to_rgba(val)
                 ax.add_patch(
-                    plt.Rectangle((chr_idx_db[chrn] + 0.15, sp), .7, ep - sp + 1, facecolor=color, edgecolor='none'))
+                    plt.Rectangle((x, y), w, h, facecolor=color, edgecolor='none'))
             clb = plt.colorbar(mapper, shrink=0.5)
         else:
             chr_idx_db = {chr_list[_]: _ for _ in range(chr_cnt)}
             for chrn, sp, ep, color in self.__bed_data:
+                x = chr_idx_db[chrn] + 0.15
+                y = sp
+                w = .7
+                h = ep - sp + 1
+                if self.__orientation == 'horizontal':
+                    x, y = y, x
+                    w, h = h, w
                 ax.add_patch(
-                    plt.Rectangle((chr_idx_db[chrn] + 0.15, sp), .7, ep - sp + 1, facecolor=color, edgecolor='none'))
-        xticks = []
-        for i in range(chr_cnt):
-            xticks.append(i + 0.5)
-        ax.set_xticks(xticks, sorted(self.__chr_len_db), rotation=90)
-        yticks = []
-        ylabels = []
-        # add label each Mb
-        for pos in range(0, int(max_height), int(1e6)):
-            yticks.append(pos)
-            ylabels.append("%.0fMb" % (pos / 1e6))
-        ax.set_yticks(yticks, ylabels)
+                    plt.Rectangle((x, y), w, h, facecolor=color, edgecolor='none'))
 
         return clb
 
 
-def chromosome(chr_len_db: dict, bed_data: list, centro_db: dict = None, byval: bool = True, lw: int = 3):
-    plotter = _Chromosome(chr_len_db, bed_data, centro_db, byval, lw)
+def chromosome(chr_len_db: dict, bed_data: list = None, centro_db: dict = None, byval: bool = True,
+               orientation: str = "vertical", **kwargs):
+    plotter = _Chromosome(chr_len_db, bed_data, centro_db, byval, orientation)
 
     if not plt:
         plt.figure()
-    clb = plotter.plot(plt.gca(), plt.gcf())
+    clb = plotter.plot(plt.gca(), plt.gcf(), kwargs)
 
     return plt.gca(), clb
