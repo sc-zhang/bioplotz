@@ -185,7 +185,7 @@ class _Chromosome(object):
             # Plot regions
             chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
             for chrn, sp, ep, val in self.__bed_data:
-                x = chr_idx_db[chrn] + 0.15
+                x = chr_idx_db[chrn] - 0.35
                 y = sp
                 w = .7
                 h = ep - sp + 1
@@ -199,7 +199,7 @@ class _Chromosome(object):
         else:
             chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
             for chrn, sp, ep, color in self.__bed_data:
-                x = chr_idx_db[chrn] + 0.15
+                x = chr_idx_db[chrn] - 0.35
                 y = sp
                 w = .7
                 h = ep - sp + 1
