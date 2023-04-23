@@ -183,7 +183,7 @@ class _Chromosome(object):
             mapper.set_array(np.arange(min_val, max_val, 0.1))
 
             # Plot regions
-            chr_idx_db = {chr_list[_]: _ for _ in range(chr_cnt)}
+            chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
             for chrn, sp, ep, val in self.__bed_data:
                 x = chr_idx_db[chrn] + 0.15
                 y = sp
@@ -197,7 +197,7 @@ class _Chromosome(object):
                     plt.Rectangle((x, y), w, h, facecolor=color, edgecolor='none'))
             clb = plt.colorbar(mapper, shrink=0.5)
         else:
-            chr_idx_db = {chr_list[_]: _ for _ in range(chr_cnt)}
+            chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
             for chrn, sp, ep, color in self.__bed_data:
                 x = chr_idx_db[chrn] + 0.15
                 y = sp
