@@ -149,7 +149,7 @@ class _Chromosome(object):
         xticks = []
         for i in range(chr_cnt):
             xticks.append(i)
-        xlabels = sorted(self.__chr_len_db)
+        xlabels = self.__chr_order
 
         yticks = []
         ylabels = []
