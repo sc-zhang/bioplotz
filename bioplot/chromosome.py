@@ -173,7 +173,10 @@ class _Chromosome(object):
         for pos in range(0, int(max_height), int(1e6)):
             yticks.append(pos)
             ylabels.append("%.0fMb" % (pos / 1e6))
-
+        next_pos = round(max_height/1e6)*1e6
+        if next_pos > yticks[-1]:
+            yticks.append(next_pos)
+            ylabels.append("%.0fMb" % (next_pos / 1e6))
         if self.__orientation == 'horizontal':
             xticks, yticks = yticks, xticks
             xlabels, ylabels = ylabels, xlabels
