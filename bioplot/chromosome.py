@@ -12,6 +12,8 @@ class _Chromosome(object):
                  centro_db: dict = None,
                  value_type: str = "numeric",
                  orientation: str = "vertical",
+                 cmap: str = "gist_rainbow",
+                 cmap_parts: int = 100,
                  s: any = None):
 
         self.__chr_len_db = chr_len_db
@@ -20,11 +22,15 @@ class _Chromosome(object):
         self.__centro_db = centro_db
         self.__value_type = value_type.lower()
         self.__avail_types = {'numeric', 'color', 'marker'}
-        self.__s = s
-
         if self.__value_type not in self.__avail_types:
             raise ValueError("value_type must in %s" % ','.join(list(self.__avail_types)))
 
+        self.__s = s
+        self.__cmap = plt.get_cmap(cmap)
+        if cmap_parts <= 0:
+            raise ValueError("cmap_parts must larger than 0")
+
+        self.__cmap_parts = cmap_parts
         self.__orientation = orientation
 
     # pos: 0~3, means top_right, top_left, buttom_left, buttom_right
@@ -181,7 +187,7 @@ class _Chromosome(object):
         if self.__chr_order:
             chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
         else:
-            chr_idx_db= {chr_list[_]: _ for _ in range(chr_cnt)}
+            chr_idx_db = {chr_list[_]: _ for _ in range(chr_cnt)}
 
         if self.__value_type == 'numeric':
             # Init colormap
@@ -193,8 +199,8 @@ class _Chromosome(object):
                 if not min_val or val < min_val:
                     min_val = val
             norm = mpl.colors.Normalize(vmin=min_val, vmax=max_val, clip=True)
-            mapper = mpl.cm.ScalarMappable(norm=norm, cmap=plt.get_cmap("gist_rainbow"))
-            mapper.set_array(np.arange(min_val, max_val, 0.1))
+            mapper = mpl.cm.ScalarMappable(norm=norm, cmap=self.__cmap)
+            mapper.set_array(np.arange(min_val, max_val, (max_val-min_val)*1./self.__cmap_parts))
 
             # Plot regions
             for chrn, sp, ep, val in self.__bed_data:
@@ -239,10 +245,12 @@ def chromosome(chr_len_db: dict,
                centro_db: dict = None,
                value_type: str = "numeric",
                orientation: str = "vertical",
+               cmap: str = "gist_rainbow",
+               cmap_parts: int = 100,
                s: any = None,
                **kwargs):
 
-    plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, value_type, orientation, s)
+    plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, value_type, orientation, cmap, cmap_parts, s)
 
     if not plt:
         plt.figure()
