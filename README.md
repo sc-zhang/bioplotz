@@ -30,16 +30,18 @@ man_plot = mh.manhattan(data, threshold=0, color=['orange', 'green'], threshold_
 | **reverse**              | Boolean       | if all data lower than 0, you may use it to show opposite values                                                                                                                                                                                                                                                                                                     |
 | **other parameters**     | value         | same with parameters used in **pyplot.scatter**                                                                                                                                                                                                                                                                                                                      |
 
+![](examples/manhattan.png)
+
 ### Chromosome Plot
 
 ```python
 import bioplot.chromosome as chrp
 
-chr_plot = chrp.chromosome(chr_len, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
+chr_plot = chrp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
 ```
 | parameter            | value type                     | Optional | explain                                                                                                                                                                                                                                   |
 |----------------------|--------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **chr_len**          | Directory                      | No       | **key**: chromosome name<br>**value**: chromosome length                                                                                                                                                                                  |
+| **chr_len_db**       | Directory                      | No       | **key**: chromosome name<br>**value**: chromosome length                                                                                                                                                                                  |
 | **chr_order**        | list                           | Yes      | **list**: the custom chromosome order, like: ["Chr1", "Chr3", "Chr2"]<br>must same with keys in chr_len                                                                                                                                   |
 | **bed_data**         | list                           | Yes      | **list**: two dimension list, like: [[chrome name, start pos, end pos, value/color]]                                                                                                                                                      |
 | **centro_pos**       | Directory                      | Yes      | **key**: chromosome name<br>**value**: middle position of centromere                                                                                                                                                                      |
@@ -49,3 +51,5 @@ chr_plot = chrp.chromosome(chr_len, bed_data, centro_pos, value_type="numeric", 
 | **other parameters** | value                          | Yes      | same with parameters used in **pyplot.plot**                                                                                                                                                                                              |
 
 - If byval is True, the return value is (ax, colorbar), otherwise (ax, None)
+
+![](examples/chromosome.png)
