@@ -19,27 +19,7 @@ class _Manhattan(object):
         '''
         Convert __data to pd.DataFrame
         '''
-        if isinstance(data, pd.DataFrame):
-            columns = list(data.columns)
-            if isinstance(columns[0], int):
-                columns = []
-                x_max = max(data[0])
-                if log_base != 0:
-                    data[1] = np.log(data[1]) / np.log(log_base)
-                if reverse:
-                    data[1] = -data[1]
-                tmp_y.extend(data[1])
-            else:
-                for col in columns:
-                    data[col][0] = np.add(data[col][0], x_max)
-                    x_ticks.append((max(data[col][0]) - x_max) / 2 + x_max)
-                    x_max = max(data[col][0])
-                    if log_base != 0:
-                        data[col][1] = np.log(data[col][1]) / np.log(log_base)
-                    if reverse:
-                        data[col][1] = -data[col][1]
-                    tmp_y.extend(data[col][1])
-        elif isinstance(data, dict):
+        if isinstance(data, dict):
             columns = sorted(data)
             data = pd.DataFrame(data, columns=columns)
             for col in columns:
