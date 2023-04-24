@@ -56,7 +56,7 @@ chr_plot = chrp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric
 | **s**                | float or array-like, shape(n,) | Yes      | None         | same with parameter s use in **pyplot.scatter**                                                                                                                                                                                           |
 | **other parameters** | value                          | Yes      | None         | same with parameters used in **pyplot.plot**                                                                                                                                                                                              |
 
-- If byval is True, the return value is (ax, colorbar), otherwise (ax, None)
+- If value_type is numeric, the return value is (ax, colorbar), otherwise (ax, None)
 <table align="center">
 <tr>
 <td><img width=500 height=270 src="examples/chromosome.png"></td>
