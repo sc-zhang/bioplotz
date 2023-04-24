@@ -156,7 +156,10 @@ class _Chromosome(object):
         xticks = []
         for i in range(chr_cnt):
             xticks.append(i)
-        xlabels = self.__chr_order
+        if self.__chr_order:
+            xlabels = self.__chr_order
+        else:
+            xlabels = chr_list
 
         yticks = []
         ylabels = []
@@ -175,8 +178,11 @@ class _Chromosome(object):
 
         if not self.__bed_data:
             return None
+        if self.__chr_order:
+            chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
+        else:
+            chr_idx_db= {chr_list[_]: _ for _ in range(chr_cnt)}
 
-        chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
         if self.__value_type == 'numeric':
             # Init colormap
             max_val = None
