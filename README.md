@@ -30,7 +30,11 @@ man_plot = mh.manhattan(data, threshold=0, color=['orange', 'green'], threshold_
 | **reverse**              | Boolean       | if all data lower than 0, you may use it to show opposite values                                                                                                                                                                                                                                                                                                     |
 | **other parameters**     | value         | same with parameters used in **pyplot.scatter**                                                                                                                                                                                                                                                                                                                      |
 
-![](examples/manhattan.png)
+<table align="center">
+<tr>
+<td><img width=600 src="examples/manhattan.png"></td>
+</tr>
+</table>
 
 ### Chromosome Plot
 
@@ -51,5 +55,10 @@ chr_plot = chrp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric
 | **other parameters** | value                          | Yes      | same with parameters used in **pyplot.plot**                                                                                                                                                                                              |
 
 - If byval is True, the return value is (ax, colorbar), otherwise (ax, None)
+<table align="center">
+<tr>
+<td><img width=500 height=270 src="examples/chromosome.png"></td>
+<td><img width=500 height=270 src="examples/chromosome_h.png"></td>
+</tr>
+</table>
 
-![](examples/chromosome.png)
