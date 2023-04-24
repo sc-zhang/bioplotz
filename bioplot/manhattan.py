@@ -5,8 +5,8 @@ import pandas as pd
 
 
 class _Manhattan(object):
-    def __init__(self, data, threshold=0, color=None, threshold_line_color='blue', log_base=0,
-                 reverse=False, xtick_labels=True, ytick_labels=True):
+    def __init__(self, data, threshold=0, color=None, threshold_line_color='blue', threshold_line_width=1,
+                 block_line_width=1, log_base=0, reverse=False, xtick_labels=True, ytick_labels=True):
         if color is None:
             color = ['orange', 'green']
         if log_base < 0:
@@ -73,6 +73,8 @@ class _Manhattan(object):
         self.__color = color
         self.__threshold = threshold
         self.__threshold_line_color = threshold_line_color
+        self.__threshold_line_width = threshold_line_width
+        self.__block_line_width = block_line_width
         self.__xtick_labels = xtick_labels
         self.__ytick_labels = ytick_labels
 
@@ -108,22 +110,24 @@ class _Manhattan(object):
                     ax.scatter(data[col][0], data[col][1], color=self.__color[color_idx], marker=marker, s=s, **kws)
                     if color_cnt == 1:
                         x = max(data[col][0])
-                        ax.plot([x, x], [self.__ymin, self.__ymax], color='lightgrey', linewidth=0.8, linestyle=':')
+                        ax.plot([x, x], [self.__ymin, self.__ymax], color='lightgrey', lw=self.__block_line_width,
+                                linestyle=':')
             else:
                 for col in self.__x_labels:
                     ax.scatter(data[col][0], data[col][1], color=self.__color, **kws)
                     x = max(data[col][0])
-                    ax.plot([x, x], [self.__ymin, self.__ymax], color='lightgrey', linewidth=0.8, linestyle=':')
+                    ax.plot([x, x], [self.__ymin, self.__ymax], color='lightgrey', lw=self.__block_line_width,
+                            linestyle=':')
 
-        ax.plot([0, self.__xmax], [0, 0], color='lightgrey', linewidth=0.5)
+        ax.plot([0, self.__xmax], [0, 0], color='lightgrey', lw=self.__block_line_width)
         # Plot thresholds
         if not (len(self.__threshold) == 1 and self.__threshold[0] == 0):
             color_cnt = len(self.__threshold_line_color)
             for i in range(0, len(self.__threshold)):
                 th = self.__threshold[i]
                 color_idx = i % color_cnt
-                ax.plot([0, self.__xmax], [th, th], color=self.__threshold_line_color[color_idx], linewidth=0.8,
-                        linestyle=':')
+                ax.plot([0, self.__xmax], [th, th], color=self.__threshold_line_color[color_idx],
+                        lw=self.__threshold_line_width, linestyle=':')
 
         ax.tick_params(axis='both', which='both', length=0)
         ax.spines['top'].set_linewidth(0.5)
@@ -137,12 +141,13 @@ class _Manhattan(object):
 
 
 def manhattan(data, threshold=0, color=None,
-              threshold_line_color='blue', log_base=0, reverse=False,
+              threshold_line_color='blue', threshold_line_width=1,
+              block_line_width=1, log_base=0, reverse=False,
               xtick_labels=True, ytick_labels=True, ax=None, marker='.',
               s=1, **kwargs):
     if color is None:
         color = ['orange', 'green']
-    plotter = _Manhattan(data, threshold, color, threshold_line_color,
+    plotter = _Manhattan(data, threshold, color, threshold_line_color, threshold_line_width, block_line_width,
                          log_base, reverse, xtick_labels, ytick_labels)
 
     if ax is None:
