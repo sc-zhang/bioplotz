@@ -43,18 +43,18 @@ import bioplot.chromosome as chrp
 
 chr_plot = chrp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
 ```
-| parameter            | value type                     | Optional | Default      | explain                                                                                                                                                                                                                                   |
-|----------------------|--------------------------------|----------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **chr_len_db**       | dict                           | No       | -            | **key**: chromosome name<br>**value**: chromosome length                                                                                                                                                                                  |
-| **chr_order**        | list                           | Yes      | None         | **list**: the custom chromosome order, like: ["Chr1", "Chr3", "Chr2"]<br>must same with keys in chr_len                                                                                                                                   |
-| **bed_data**         | list                           | Yes      | None         | **list**: two dimension list, like: [[chrome name, start pos, end pos, value/color]]                                                                                                                                                      |
-| **centro_pos**       | dict                           | Yes      | None         | **key**: chromosome name<br>**value**: middle position of centromere                                                                                                                                                                      |
+| parameter            | value type                     | Optional | Default      | explain                                                                                                                                                                                                                                                                                                           |
+|----------------------|--------------------------------|----------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **chr_len_db**       | dict                           | No       | -            | **key**: chromosome name<br>**value**: chromosome length                                                                                                                                                                                                                                                          |
+| **chr_order**        | list                           | Yes      | None         | **list**: the custom chromosome order, like: ["Chr1", "Chr3", "Chr2"]<br>must same with keys in chr_len                                                                                                                                                                                                           |
+| **bed_data**         | list                           | Yes      | None         | **list**: two dimension list, like: [[chrome name, start pos, end pos, value/color]]                                                                                                                                                                                                                              |
+| **centro_pos**       | dict                           | Yes      | None         | **key**: chromosome name<br>**value**: middle position of centromere                                                                                                                                                                                                                                              |
 | **value_type**       | str                            | Yes      | numeric      | **numeric**: the 4th column of bed_data should be value<br>**color**: the 4th column of bed_data is color<br>**marker**: different with other two types, it need 5 columns, the 4th column of bed_data is marker, the 5th column is color (marker is same with the parameter which be used in **pyplot.scatter**) |
-| **orientation**      | str                            | Yes      | vertical     | "vertical" or "horizontal"                                                                                                                                                                                                                |
-| **cmap**             | str                            | Yes      | gist_rainbow | **cmap** for colorbar                                                                                                                                                                                                                     |
-| **cmap_parts**       | int                            | Yes      | 100          | how many parts for splitting cmap                                                                                                                                                                                                         |
-| **s**                | float or array-like, shape(n,) | Yes      | None         | same with parameter s use in **pyplot.scatter**                                                                                                                                                                                           |
-| **other parameters** | value                          | Yes      | None         | same with parameters used in **pyplot.plot**                                                                                                                                                                                              |
+| **orientation**      | str                            | Yes      | vertical     | "vertical" or "horizontal"                                                                                                                                                                                                                                                                                        |
+| **cmap**             | str                            | Yes      | gist_rainbow | **cmap** for colorbar                                                                                                                                                                                                                                                                                             |
+| **cmap_parts**       | int                            | Yes      | 100          | how many parts for splitting cmap                                                                                                                                                                                                                                                                                 |
+| **s**                | float or array-like, shape(n,) | Yes      | None         | same with parameter s use in **pyplot.scatter**                                                                                                                                                                                                                                                                   |
+| **other parameters** | value                          | Yes      | None         | same with parameters used in **pyplot.plot**                                                                                                                                                                                                                                                                      |
 
 - If value_type is numeric, the return value is (ax, colorbar), otherwise (ax, None)
 <table align="center">
@@ -64,3 +64,22 @@ chr_plot = chrp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric
 </tr>
 </table>
 
+### Gene Cluster Plot
+
+```python
+import bioplot.genecluster as gclp
+
+gcl_plot = gclp.gene_cluster(gene_list)
+```
+| parameter     | value type  | Optional | Default | explain                                                                                                                                          |
+|---------------|-------------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| **gene_list** | list        | No       | -       | **list**: 2-dimension list, like [[gene name, start pos, end pos, direct(+/-), color], ..., [gene name, start pos, end pos, direct(+/-), color]] |
+| **edgecolor** | list<br>str | Yes      | None    | **list**: same length with gene_list, like: ["green", "blue", ..., "red"]<br>**str**: common edge color for all genes                            |
+| **edgewidth** | int         | Yes      | 1       | edge width for all genes                                                                                                                         |
+| **lw**        | int         | Yes      | 3       | line width to show the genome backbone                                                                                                           |
+
+<table align="center">
+<tr>
+<td><img width=600 src="examples/genecluster.png"></td>
+</tr>
+</table>
