@@ -25,7 +25,7 @@ class _Manhattan(object):
                 columns = []
                 x_max = max(data[0])
                 if log_base != 0:
-                    data[1] = -np.log(data[1]) / np.log(log_base)
+                    data[1] = np.log(data[1]) / np.log(log_base)
                 if reverse:
                     data[1] = -data[1]
                 tmp_y.extend(data[1])
