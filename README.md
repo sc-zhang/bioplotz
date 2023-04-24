@@ -77,7 +77,9 @@ gcl_plot = gclp.gene_cluster(gene_list)
 | **edgecolor** | list<br>str | Yes      | None    | **list**: same length with gene_list, like: ["green", "blue", ..., "red"]<br>**str**: common edge color for all genes                            |
 | **edgewidth** | int         | Yes      | 1       | edge width for all genes                                                                                                                         |
 | **lw**        | int         | Yes      | 3       | line width to show the genome backbone                                                                                                           |
+
 **Notice**, the best figsize should be (gene count, 1), for example: plt.figure(figsize=(16, 1))
+
 <table align="center">
 <tr>
 <td><img width=600 src="examples/genecluster.png"></td>
