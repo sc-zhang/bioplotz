@@ -13,10 +13,10 @@ Python modules:
 ### Manhanttan Plot
 
 ```python
-import bioplot as bp
+import bioplotz as bp
 
 fig, ax = bp.manhattan(data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=0,
-                        reverse=False, xtick_labels=True, ytick_labels=True, ax=None, marker='.', s=1, **kwargs)
+                       reverse=False, xtick_labels=True, ytick_labels=True, ax=None, marker='.', s=1, **kwargs)
 ```
 | parameter                | value type    | explain                                                                                                                                                                                                                                                                                                                                                              |
 |--------------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -39,7 +39,7 @@ fig, ax = bp.manhattan(data, threshold=0, color=['orange', 'green'], threshold_l
 ### Chromosome Plot
 
 ```python
-import bioplot as bp
+import bioplotz as bp
 
 fig, ax, clb = bp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
 ```
@@ -67,7 +67,7 @@ fig, ax, clb = bp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numer
 ### Gene Cluster Plot
 
 ```python
-import bioplot as bp
+import bioplotz as bp
 
 fig, ax = bp.gene_cluster(gene_list)
 ```
