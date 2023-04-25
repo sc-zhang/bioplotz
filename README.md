@@ -74,7 +74,7 @@ fig, ax, clb = bp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numer
 ```python
 import bioplotz as bp
 
-fig, ax = bp.gene_cluster(gene_list)
+fig, ax = bp.genecluster(gene_list)
 ```
 | parameter     | value type  | Optional | Default | explain                                                                                                                                          |
 |---------------|-------------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------|
