@@ -13,9 +13,9 @@ Python modules:
 ### Manhanttan Plot
 
 ```python
-import bioplot.manhattan as mh
+import bioplot as bp
 
-man_plot = mh.manhattan(data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=0,
+fig, ax = bp.manhattan(data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=0,
                         reverse=False, xtick_labels=True, ytick_labels=True, ax=None, marker='.', s=1, **kwargs)
 ```
 | parameter                | value type    | explain                                                                                                                                                                                                                                                                                                                                                              |
@@ -39,9 +39,9 @@ man_plot = mh.manhattan(data, threshold=0, color=['orange', 'green'], threshold_
 ### Chromosome Plot
 
 ```python
-import bioplot.chromosome as chrp
+import bioplot as bp
 
-chr_plot = chrp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
+fig, ax, clb = bp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
 ```
 | parameter            | value type                     | Optional | Default      | explain                                                                                                                                                                                                                                                                                                           |
 |----------------------|--------------------------------|----------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -56,7 +56,7 @@ chr_plot = chrp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric
 | **s**                | float or array-like, shape(n,) | Yes      | None         | same with parameter s use in **pyplot.scatter**                                                                                                                                                                                                                                                                   |
 | **other parameters** | value                          | Yes      | None         | same with parameters used in **pyplot.plot**                                                                                                                                                                                                                                                                      |
 
-- If value_type is numeric, the return value is (ax, colorbar), otherwise (ax, None)
+- If value_type is numeric, the return value clb will be colorbar, else None
 <table align="center">
 <tr>
 <td><img width=500 height=270 src="examples/chromosome.png"></td>
@@ -67,9 +67,9 @@ chr_plot = chrp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric
 ### Gene Cluster Plot
 
 ```python
-import bioplot.genecluster as gclp
+import bioplot as bp
 
-gcl_plot = gclp.gene_cluster(gene_list)
+fig, ax = bp.gene_cluster(gene_list)
 ```
 | parameter     | value type  | Optional | Default | explain                                                                                                                                          |
 |---------------|-------------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -78,7 +78,7 @@ gcl_plot = gclp.gene_cluster(gene_list)
 | **edgewidth** | int         | Yes      | 1       | edge width for all genes                                                                                                                         |
 | **lw**        | int         | Yes      | 3       | line width to show the genome backbone                                                                                                           |
 
-**Notice**, the best figsize should be (gene count, 1), for example: plt.figure(figsize=(16, 1))
+**Notice**, the best figsize should be (gene count, 1), for example: plt.figure(figsize=(16, 1)), and the bbox_inches parameter which in savefig should be 'tight'.
 
 <table align="center">
 <tr>
