@@ -55,12 +55,11 @@ class _GeneCluster(object):
         ax.tick_params('both', length=0)
 
 
-def gene_cluster(gene_list: list,
-                 edgecolor: any = None,
-                 edgewidth: int = 1,
-                 lw: int = 3
-                 ):
-
+def genecluster(gene_list: list,
+                edgecolor: any = None,
+                edgewidth: int = 1,
+                lw: int = 3
+                ):
     plotter = _GeneCluster(gene_list, edgecolor, edgewidth, lw)
 
     if not plt:
