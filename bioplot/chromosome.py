@@ -257,6 +257,9 @@ def chromosome(chr_len_db: dict,
 
     if not plt:
         plt.figure()
-    clb = plotter.plot(plt.gca(), plt.gcf(), kwargs)
 
-    return plt.gca(), clb
+    fig = plt.gcf()
+    ax = plt.gca()
+    clb = plotter.plot(ax, fig, kwargs)
+
+    return fig, ax, clb

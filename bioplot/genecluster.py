@@ -66,6 +66,8 @@ def gene_cluster(gene_list: list,
 
     if not plt:
         plt.figure()
-    plotter.plot(plt.gca(), plt.gcf())
+    fig = plt.gcf()
+    ax = plt.gca()
+    plotter.plot(ax, fig)
 
-    return plt.gca()
+    return fig, ax

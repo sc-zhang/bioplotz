@@ -150,8 +150,10 @@ def manhattan(data, threshold=0, color=None,
     plotter = _Manhattan(data, threshold, color, threshold_line_color, threshold_line_width, block_line_width,
                          log_base, reverse, xtick_labels, ytick_labels)
 
-    if ax is None:
-        ax = plt.gca()
+    if not plt:
+        plt.figure()
+    fig = plt.gcf()
+    ax = plt.gca()
     plotter.plot(ax, marker, s, kwargs)
 
-    return ax
+    return fig, ax
