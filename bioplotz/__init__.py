@@ -1,8 +1,5 @@
-import bioplotz.chromosome
-import bioplotz.genecluster
-import bioplotz.manhattan
+from .chromosome import chromosome as chromosome
+from .genecluster import genecluster as genecluster
+from .manhattan import manhattan as manhattan
 
-
-chromosome = bioplotz.chromosome.chromosome
-genecluster = bioplotz.genecluster.gene_cluster
-manhattan = bioplotz.manhattan.manhattan
+__version__ = "0.1.0.dev0"
