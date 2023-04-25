@@ -8,6 +8,11 @@ Python modules:
 &ensp;&ensp;&ensp;&ensp;matplotlib  
 &ensp;&ensp;&ensp;&ensp;pandas  
 
+## Installation
+```bash
+pip install git+https://github.com/sc-zhang/bioplot.git --user
+```
+
 ## Usage
 
 ### Manhanttan Plot
