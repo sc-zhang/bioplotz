@@ -10,7 +10,7 @@ Python modules:
 
 ## Installation
 ```bash
-pip install git+https://github.com/sc-zhang/bioplot.git --user
+pip install git+https://github.com/sc-zhang/bioplotz.git --user
 ```
 
 ## Usage
