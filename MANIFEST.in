@@ -1,0 +1,3 @@
+recursive-exclude .github *
+recursive-exclude examples *
+exclude .*
