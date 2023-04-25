@@ -15,7 +15,7 @@ pip install git+https://github.com/sc-zhang/bioplotz.git --user
 
 ## Usage
 
-### Manhanttan Plot
+### Manhattan Plot
 
 ```python
 import bioplotz as bp
