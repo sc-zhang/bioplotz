@@ -37,7 +37,7 @@ fig, ax = bp.manhattan(data, threshold=0, color=['orange', 'green'], threshold_l
 
 <table align="center">
 <tr>
-<td><img width=600 src="https://github.com/sc-zhang/bioplotz/blob/master/examples/manhattan.png"></td>
+<td><img width=600 src="examples/manhattan.png"></td>
 </tr>
 </table>
 
@@ -64,8 +64,8 @@ fig, ax, clb = bp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numer
 - If value_type is numeric, the return value clb will be colorbar, else None
 <table align="center">
 <tr>
-<td><img width=500 height=270 src="https://github.com/sc-zhang/bioplotz/blob/master/examples/chromosome.png"></td>
-<td><img width=500 height=270 src="https://github.com/sc-zhang/bioplotz/blob/master/examples/chromosome_h.png"></td>
+<td><img width=500 height=270 src="examples/chromosome.png"></td>
+<td><img width=500 height=270 src="examples/chromosome_h.png"></td>
 </tr>
 </table>
 
@@ -87,6 +87,6 @@ fig, ax = bp.genecluster(gene_list)
 
 <table align="center">
 <tr>
-<td><img width=600 src="https://github.com/sc-zhang/bioplotz/blob/master/examples/genecluster.png"></td>
+<td><img width=600 src="examples/genecluster.png"></td>
 </tr>
 </table>
