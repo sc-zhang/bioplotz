@@ -82,7 +82,7 @@ class _MultiAlign(object):
 
             for j in range(seq_cnt):
                 gid = seq_list[j]
-                y_ticks.append(i * (seq_cnt + 2) + j + .5)
+                y_ticks.append(i * (seq_cnt + 2) + j + 1)
                 y_labels.append(gid)
                 self.__rainbow_text(0, i * (seq_cnt + 2) + j + 1, self.__data[gid][sp: ep], colors, **kwargs)
         ax.set_ylim(0, total_row_cnt)
