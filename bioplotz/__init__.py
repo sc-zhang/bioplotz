@@ -4,4 +4,4 @@ from .manhattan import manhattan as manhattan
 from .mulitalign import multialign as multialign
 
 
-__version__ = "0.1.0.dev2"
+__version__ = "0.1.0.dev3"
