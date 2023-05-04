@@ -114,7 +114,10 @@ import bioplotz as bp
 basefont = mpl.font_manager.FontProperties(fname="/path/to/font.ttf")
 fig, ax = bp.multialign(data, fontproperties=basefont)
 ```
-
+or
+```python
+plt.rcParams['font.sans-serif'] = 'Courier New'
+```
 <table align="center">
 <tr>
 <td><img width=600 src="examples/multialign.png"></td>
