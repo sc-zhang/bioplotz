@@ -90,3 +90,33 @@ fig, ax = bp.genecluster(gene_list)
 <td><img width=600 src="examples/genecluster.png"></td>
 </tr>
 </table>
+
+### Multi Alignment Plot
+
+```python
+import bioplotz as bp
+
+fig, ax = bp.multialign(data)
+```
+| parameter          | value type | Optional | Default | explain                                             |
+|--------------------|------------|----------|---------|-----------------------------------------------------|
+| **data**           | dict       | No       | -       | **key**: gene name<br>**value**: alignment sequence |
+| **match_color**    | str        | Yes      | blue    | color for displaying matched bases                  |
+| **mismatch_color** | str        | Yes      | red     | color for highlighting mismatched bases             |
+| ****kwargs**       | any        | Yes      | -       | same with which use in ax.text                      |
+
+**Notice**, the figsize should be (8, x) where x=align_length/80*gene_count/5, and the font must be  monospaced, 
+like "Courier New", that sometimes user need add codes as following.
+```python
+import matplotlib as mpl
+import bioplotz as bp
+
+basefont = mpl.font_manager.FontProperties(fname="/path/to/font.ttf")
+fig, ax = bp.multialign(data, fontproperties=basefont)
+```
+
+<table align="center">
+<tr>
+<td><img width=600 src="examples/multialign.png"></td>
+</tr>
+</table>
