@@ -8,13 +8,13 @@ class _MultiAlign(object):
                  data: dict,
                  match_color: any = 'blue',
                  mismatch_color: any = 'red',
-                 letter_per_line: int = 80,
+                 base_per_line: int = 80,
                  highlight_positions: list = None,
                  highlight_color: any = 'green'):
         self.__data = data
         self.__match_color = match_color
         self.__mismatch_color = mismatch_color
-        self.__letter_per_line = letter_per_line
+        self.__base_per_line = base_per_line
         self.__highlight_positions = set(highlight_positions)
         self.__highlight_color = highlight_color
 
@@ -62,23 +62,23 @@ class _MultiAlign(object):
             break
         seq_cnt = len(self.__data)
         seq_list = sorted(self.__data.keys())
-        row_cnt = int(aln_len*1./self.__letter_per_line)
-        if row_cnt * self.__letter_per_line < aln_len:
+        row_cnt = int(aln_len*1./self.__base_per_line)
+        if row_cnt * self.__base_per_line < aln_len:
             row_cnt += 1
         total_row_cnt = (row_cnt + 2) * seq_cnt
 
-        divide_repeat_cnt = int(self.__letter_per_line/5.)
-        if divide_repeat_cnt*5 < self.__letter_per_line:
+        divide_repeat_cnt = int(self.__base_per_line/5.)
+        if divide_repeat_cnt*5 < self.__base_per_line:
             divide_repeat_cnt += 1
 
         divide = '----+' * divide_repeat_cnt
-        divide = divide[:self.__letter_per_line]
+        divide = divide[:self.__base_per_line]
 
         y_ticks = []
         y_labels = []
         for i in range(row_cnt):
-            sp = i * self.__letter_per_line
-            ep = min(aln_len, sp + self.__letter_per_line)
+            sp = i * self.__base_per_line
+            ep = min(aln_len, sp + self.__base_per_line)
 
             divide_and_pos = "%s %d-%d" % (divide, sp + 1, ep)
             colors = ['black' for _ in range(len(divide_and_pos))]
@@ -110,12 +110,12 @@ class _MultiAlign(object):
 def multialign(data: dict,
                match_color: any = 'blue',
                mismatch_color: any = 'red',
-               letter_per_line: int = 80,
+               base_per_line: int = 80,
                highlight_positions: list = None,
                highlight_color: any = 'green',
                **kwargs):
 
-    plotter = _MultiAlign(data, match_color, mismatch_color, letter_per_line, highlight_positions, highlight_color)
+    plotter = _MultiAlign(data, match_color, mismatch_color, base_per_line, highlight_positions, highlight_color)
 
     if not plt:
         plt.figure()
