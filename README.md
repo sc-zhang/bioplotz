@@ -98,12 +98,15 @@ import bioplotz as bp
 
 fig, ax = bp.multialign(data)
 ```
-| parameter          | value type | Optional | Default | explain                                             |
-|--------------------|------------|----------|---------|-----------------------------------------------------|
-| **data**           | dict       | No       | -       | **key**: gene name<br>**value**: alignment sequence |
-| **match_color**    | str        | Yes      | blue    | color for displaying matched bases                  |
-| **mismatch_color** | str        | Yes      | red     | color for highlighting mismatched bases             |
-| ****kwargs**       | any        | Yes      | -       | same with which use in ax.text                      |
+| parameter               | value type | Optional | Default | explain                                                 |
+|-------------------------|------------|----------|---------|---------------------------------------------------------|
+| **data**                | dict       | No       | -       | **key**: gene name<br>**value**: alignment sequence     |
+| **match_color**         | str        | Yes      | blue    | color for displaying matched bases                      |
+| **mismatch_color**      | str        | Yes      | red     | color for highlighting mismatched bases                 |
+| **base_per_line**       | int        | Yes      | 80      | base count to display for each line                     |
+| **highlight_positions** | list       | Yes      | None    | positions for highlighting, 0-base                      |
+| **highlight_color**     | str        | Yes      | green   | color for highlighting positions in highlight_positions |
+| ****kwargs**            | any        | Yes      | -       | same with which use in ax.text                          |
 
 **Notice**, the figsize should be (8, x) where x=align_length/80*gene_count/5, and the font must be  monospaced, 
 like "Courier New", that sometimes user need add codes as following.
