@@ -15,7 +15,10 @@ class _MultiAlign(object):
         self.__match_color = match_color
         self.__mismatch_color = mismatch_color
         self.__base_per_line = base_per_line
-        self.__highlight_positions = set(highlight_positions)
+        if highlight_positions:
+            self.__highlight_positions = set(highlight_positions)
+        else:
+            self.__highlight_positions = None
         self.__highlight_color = highlight_color
 
     @staticmethod
@@ -91,7 +94,7 @@ class _MultiAlign(object):
                     cur_set.add(self.__data[j][k])
                 if len(cur_set) > 1:
                     colors[k - sp] = self.__mismatch_color
-                if k in self.__highlight_positions:
+                if self.__highlight_positions and k in self.__highlight_positions:
                     colors[k - sp] = self.__highlight_color
             for j in range(seq_cnt):
                 gid = seq_list[j]
