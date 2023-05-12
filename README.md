@@ -9,6 +9,12 @@ Python modules:
 &ensp;&ensp;&ensp;&ensp;pandas  
 
 ## Installation
+### Install via pip
+```bash
+pip install bioplotz
+```
+
+### Install from source code
 ```bash
 pip install git+https://github.com/sc-zhang/bioplotz.git --user
 ```
