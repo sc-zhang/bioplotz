@@ -117,7 +117,7 @@ fig, ax = bp.multialign(data)
 | **highlight_background_color** | str        | Yes      | None    | background color of highlighting positions in highlight_positions |
 | ****kwargs**                   | any        | Yes      | -       | same with which use in ax.text                                    |
 
-**Notice**, the figsize should be (8, x) where x=align_length/80*gene_count/5, and the font must be  monospaced, 
+**Notice**, the figsize should be (base_per_line/10, x) where x=align_length/base_per_line*gene_count/5, and the font must be  monospaced, 
 like "Courier New", that sometimes user need add codes as following.
 ```python
 import matplotlib as mpl
