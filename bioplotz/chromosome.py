@@ -207,9 +207,16 @@ class _Chromosome(object):
 
             # Plot regions
             for chrn, sp, ep, val in self.__bed_data:
-                x = chr_idx_db[chrn] - 0.35
                 y = sp
                 w = .7
+                dist = 0
+                if self.__centro_db and chrn in self.__centro_db:
+                    if self.__centro_db[chrn] - 0.35 * ratio <= y <= self.__centro_db[chrn]:
+                        dist = (y-self.__centro_db[chrn]+0.35*ratio)/ratio
+                    elif self.__centro_db[chrn] <= y <= self.__centro_db[chrn] + 0.35 * ratio:
+                        dist = (self.__centro_db[chrn]+0.35*ratio-y)/ratio
+                    w = np.sqrt(0.1225-dist**2)*2
+                x = chr_idx_db[chrn] - w / 2.
                 h = ep - sp + 1
                 if self.__orientation == 'horizontal':
                     x, y = y, x
@@ -220,9 +227,16 @@ class _Chromosome(object):
             clb = plt.colorbar(mapper, shrink=0.5)
         elif self.__value_type == 'color':
             for chrn, sp, ep, color in self.__bed_data:
-                x = chr_idx_db[chrn] - 0.35
                 y = sp
                 w = .7
+                dist = 0
+                if self.__centro_db and chrn in self.__centro_db:
+                    if self.__centro_db[chrn] - 0.35 * ratio <= y <= self.__centro_db[chrn]:
+                        dist = (y - self.__centro_db[chrn] + 0.35 * ratio) / ratio
+                    elif self.__centro_db[chrn] <= y <= self.__centro_db[chrn] + 0.35 * ratio:
+                        dist = (self.__centro_db[chrn] + 0.35 * ratio - y) / ratio
+                    w = np.sqrt(0.1225 - dist ** 2) * 2
+                x = chr_idx_db[chrn] - w/2.
                 h = ep - sp + 1
                 if self.__orientation == 'horizontal':
                     x, y = y, x
