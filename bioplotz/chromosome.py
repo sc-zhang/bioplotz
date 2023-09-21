@@ -138,8 +138,8 @@ class _Chromosome(object):
             else:
                 x_start = x - 0.35
                 x_end = x - 0.35
-                y_start = 0
-                y_end = height
+                y_start = r * ratio
+                y_end = height - r * ratio
                 if self.__orientation == "horizontal":
                     x_start, y_start = y_start, x_start
                     x_end, y_end = y_end, x_end
@@ -147,8 +147,8 @@ class _Chromosome(object):
 
                 x_start = x + 0.35
                 x_end = x + 0.35
-                y_start = 0
-                y_end = height
+                y_start = r * ratio
+                y_end = height - r * ratio
                 if self.__orientation == "horizontal":
                     x_start, y_start = y_start, x_start
                     x_end, y_end = y_end, x_end
@@ -212,9 +212,9 @@ class _Chromosome(object):
 
                 # if y locate at two ends or near centromeres, adjust width
                 if y <= 0.35 * ratio:
-                    dist = (y - 0.35 * ratio) / ratio
+                    dist = (0.35 * ratio-y) / ratio
                 elif y >= self.__chr_len_db[chrn] - 0.35 * ratio:
-                    dist = (self.__chr_len_db[chrn] - 0.35 * ratio - y) / ratio
+                    dist = (y - (self.__chr_len_db[chrn] - 0.35 * ratio)) / ratio
 
                 if self.__centro_db and chrn in self.__centro_db:
                     if self.__centro_db[chrn] - 0.35 * ratio <= y <= self.__centro_db[chrn]:
@@ -239,10 +239,9 @@ class _Chromosome(object):
 
                 # if y locate at two ends or near centromeres, adjust width
                 if y <= 0.35 * ratio:
-                    dist = (y - 0.35 * ratio) / ratio
+                    dist = (0.35 * ratio-y) / ratio
                 elif y >= self.__chr_len_db[chrn] - 0.35 * ratio:
-                    dist = (self.__chr_len_db[chrn] - 0.35 * ratio - y) / ratio
-
+                    dist = (y - (self.__chr_len_db[chrn] - 0.35 * ratio)) / ratio
                 if self.__centro_db and chrn in self.__centro_db:
                     if self.__centro_db[chrn] - 0.35 * ratio <= y <= self.__centro_db[chrn]:
                         dist = (y - self.__centro_db[chrn] + 0.35 * ratio) / ratio
