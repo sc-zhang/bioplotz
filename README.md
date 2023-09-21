@@ -52,7 +52,7 @@ fig, ax = bp.manhattan(data, threshold=0, color=['orange', 'green'], threshold_l
 ```python
 import bioplotz as bp
 
-fig, ax, clb = bp.chromosome(chr_len_db, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
+fig, ax, clb = bp.chromosome(chr_len_db, chr_order, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
 ```
 | parameter            | value type                     | Optional | Default      | explain                                                                                                                                                                                                                                                                                                           |
 |----------------------|--------------------------------|----------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
