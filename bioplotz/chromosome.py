@@ -77,12 +77,12 @@ class _Chromosome(object):
 
             # Draw two end arc
             for j in [2, 3]:
-                arc_x, arc_y = self.__generate_arc(r, [x, 0], j, ratio)
+                arc_x, arc_y = self.__generate_arc(r, [x, r * ratio], j, ratio)
                 if self.__orientation == "horizontal":
                     arc_x, arc_y = arc_y, arc_x
                 plt.plot(arc_x, arc_y, **kwargs)
             for j in [0, 1]:
-                arc_x, arc_y = self.__generate_arc(r, [x, height], j, ratio)
+                arc_x, arc_y = self.__generate_arc(r, [x, height - r * ratio], j, ratio)
                 if self.__orientation == "horizontal":
                     arc_x, arc_y = arc_y, arc_x
                 plt.plot(arc_x, arc_y, **kwargs)
@@ -91,7 +91,7 @@ class _Chromosome(object):
                 # if centromere found, draw it
                 x_start = x - 0.35
                 x_end = x - 0.35
-                y_start = 0
+                y_start = r * ratio
                 y_end = self.__centro_db[chrn] - r * ratio
                 if self.__orientation == "horizontal":
                     x_start, y_start = y_start, x_start
@@ -101,7 +101,7 @@ class _Chromosome(object):
                 x_start = x - 0.35
                 x_end = x - 0.35
                 y_start = self.__centro_db[chrn] + r * ratio
-                y_end = height
+                y_end = height - r * ratio
                 if self.__orientation == "horizontal":
                     x_start, y_start = y_start, x_start
                     x_end, y_end = y_end, x_end
@@ -109,7 +109,7 @@ class _Chromosome(object):
 
                 x_start = x + 0.35
                 x_end = x + 0.35
-                y_start = 0
+                y_start = r * ratio
                 y_end = self.__centro_db[chrn] - r * ratio
                 if self.__orientation == "horizontal":
                     x_start, y_start = y_start, x_start
@@ -119,7 +119,7 @@ class _Chromosome(object):
                 x_start = x + 0.35
                 x_end = x + 0.35
                 y_start = self.__centro_db[chrn] + r * ratio
-                y_end = height
+                y_end = height - r * ratio
                 if self.__orientation == "horizontal":
                     x_start, y_start = y_start, x_start
                     x_end, y_end = y_end, x_end
@@ -173,7 +173,7 @@ class _Chromosome(object):
         for pos in range(0, int(max_height), int(1e6)):
             yticks.append(pos)
             ylabels.append("%.0fMb" % (pos / 1e6))
-        next_pos = round(max_height/1e6)*1e6
+        next_pos = round(max_height / 1e6) * 1e6
         if next_pos > yticks[-1]:
             yticks.append(next_pos)
             ylabels.append("%.0fMb" % (next_pos / 1e6))
@@ -203,19 +203,26 @@ class _Chromosome(object):
                     min_val = val
             norm = mpl.colors.Normalize(vmin=min_val, vmax=max_val, clip=True)
             mapper = mpl.cm.ScalarMappable(norm=norm, cmap=self.__cmap)
-            mapper.set_array(np.arange(min_val, max_val, (max_val-min_val)*1./self.__cmap_parts))
+            mapper.set_array(np.arange(min_val, max_val, (max_val - min_val) * 1. / self.__cmap_parts))
 
             # Plot regions
             for chrn, sp, ep, val in self.__bed_data:
                 y = sp
-                w = .7
                 dist = 0
+
+                # if y locate at two ends or near centromeres, adjust width
+                if y <= 0.35 * ratio:
+                    dist = (y - 0.35 * ratio) / ratio
+                elif y >= self.__chr_len_db[chrn] - 0.35 * ratio:
+                    dist = (self.__chr_len_db[chrn] - 0.35 * ratio - y) / ratio
+
                 if self.__centro_db and chrn in self.__centro_db:
                     if self.__centro_db[chrn] - 0.35 * ratio <= y <= self.__centro_db[chrn]:
-                        dist = (y-self.__centro_db[chrn]+0.35*ratio)/ratio
+                        dist = (y - self.__centro_db[chrn] + 0.35 * ratio) / ratio
                     elif self.__centro_db[chrn] <= y <= self.__centro_db[chrn] + 0.35 * ratio:
-                        dist = (self.__centro_db[chrn]+0.35*ratio-y)/ratio
-                    w = np.sqrt(0.1225-dist**2)*2
+                        dist = (self.__centro_db[chrn] + 0.35 * ratio - y) / ratio
+
+                w = np.sqrt(0.1225 - dist ** 2) * 2
                 x = chr_idx_db[chrn] - w / 2.
                 h = ep - sp + 1
                 if self.__orientation == 'horizontal':
@@ -228,15 +235,23 @@ class _Chromosome(object):
         elif self.__value_type == 'color':
             for chrn, sp, ep, color in self.__bed_data:
                 y = sp
-                w = .7
                 dist = 0
+
+                # if y locate at two ends or near centromeres, adjust width
+                if y <= 0.35 * ratio:
+                    dist = (y - 0.35 * ratio) / ratio
+                elif y >= self.__chr_len_db[chrn] - 0.35 * ratio:
+                    dist = (self.__chr_len_db[chrn] - 0.35 * ratio - y) / ratio
+
                 if self.__centro_db and chrn in self.__centro_db:
                     if self.__centro_db[chrn] - 0.35 * ratio <= y <= self.__centro_db[chrn]:
                         dist = (y - self.__centro_db[chrn] + 0.35 * ratio) / ratio
                     elif self.__centro_db[chrn] <= y <= self.__centro_db[chrn] + 0.35 * ratio:
                         dist = (self.__centro_db[chrn] + 0.35 * ratio - y) / ratio
-                    w = np.sqrt(0.1225 - dist ** 2) * 2
-                x = chr_idx_db[chrn] - w/2.
+
+                w = np.sqrt(0.1225 - dist ** 2) * 2
+
+                x = chr_idx_db[chrn] - w / 2.
                 h = ep - sp + 1
                 if self.__orientation == 'horizontal':
                     x, y = y, x
@@ -266,7 +281,6 @@ def chromosome(chr_len_db: dict,
                cmap_parts: int = 100,
                s: any = None,
                **kwargs):
-
     plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, value_type, orientation, cmap, cmap_parts, s)
 
     if not plt:
