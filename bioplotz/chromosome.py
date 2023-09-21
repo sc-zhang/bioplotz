@@ -208,19 +208,20 @@ class _Chromosome(object):
             # Plot regions
             for chrn, sp, ep, val in self.__bed_data:
                 y = sp
+                mid = (sp+ep)/2.
                 dist = 0
 
                 # if y locate at two ends or near centromeres, adjust width
-                if y <= 0.35 * ratio:
-                    dist = (0.35 * ratio-y) / ratio
-                elif y >= self.__chr_len_db[chrn] - 0.35 * ratio:
-                    dist = (y - (self.__chr_len_db[chrn] - 0.35 * ratio)) / ratio
+                if mid <= 0.35 * ratio:
+                    dist = (0.35 * ratio - mid) / ratio
+                elif mid >= self.__chr_len_db[chrn] - 0.35 * ratio:
+                    dist = (mid - (self.__chr_len_db[chrn] - 0.35 * ratio)) / ratio
 
                 if self.__centro_db and chrn in self.__centro_db:
-                    if self.__centro_db[chrn] - 0.35 * ratio <= y <= self.__centro_db[chrn]:
-                        dist = (y - self.__centro_db[chrn] + 0.35 * ratio) / ratio
-                    elif self.__centro_db[chrn] <= y <= self.__centro_db[chrn] + 0.35 * ratio:
-                        dist = (self.__centro_db[chrn] + 0.35 * ratio - y) / ratio
+                    if self.__centro_db[chrn] - 0.35 * ratio <= sp <= self.__centro_db[chrn]:
+                        dist = (sp - self.__centro_db[chrn] + 0.35 * ratio) / ratio
+                    elif self.__centro_db[chrn] <= ep <= self.__centro_db[chrn] + 0.35 * ratio:
+                        dist = (self.__centro_db[chrn] + 0.35 * ratio - ep) / ratio
 
                 w = np.sqrt(0.1225 - dist ** 2) * 2
                 x = chr_idx_db[chrn] - w / 2.
@@ -235,18 +236,20 @@ class _Chromosome(object):
         elif self.__value_type == 'color':
             for chrn, sp, ep, color in self.__bed_data:
                 y = sp
+                mid = (sp + ep) / 2.
                 dist = 0
 
                 # if y locate at two ends or near centromeres, adjust width
-                if y <= 0.35 * ratio:
-                    dist = (0.35 * ratio-y) / ratio
-                elif y >= self.__chr_len_db[chrn] - 0.35 * ratio:
-                    dist = (y - (self.__chr_len_db[chrn] - 0.35 * ratio)) / ratio
+                if mid <= 0.35 * ratio:
+                    dist = (0.35 * ratio - mid) / ratio
+                elif mid >= self.__chr_len_db[chrn] - 0.35 * ratio:
+                    dist = (mid - (self.__chr_len_db[chrn] - 0.35 * ratio)) / ratio
+
                 if self.__centro_db and chrn in self.__centro_db:
-                    if self.__centro_db[chrn] - 0.35 * ratio <= y <= self.__centro_db[chrn]:
-                        dist = (y - self.__centro_db[chrn] + 0.35 * ratio) / ratio
-                    elif self.__centro_db[chrn] <= y <= self.__centro_db[chrn] + 0.35 * ratio:
-                        dist = (self.__centro_db[chrn] + 0.35 * ratio - y) / ratio
+                    if self.__centro_db[chrn] - 0.35 * ratio <= sp <= self.__centro_db[chrn]:
+                        dist = (sp - self.__centro_db[chrn] + 0.35 * ratio) / ratio
+                    elif self.__centro_db[chrn] <= ep <= self.__centro_db[chrn] + 0.35 * ratio:
+                        dist = (self.__centro_db[chrn] + 0.35 * ratio - ep) / ratio
 
                 w = np.sqrt(0.1225 - dist ** 2) * 2
 
