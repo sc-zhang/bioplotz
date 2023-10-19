@@ -22,7 +22,7 @@ class _Manhattan(object):
             columns = sorted(data)
             data = pd.DataFrame(data, columns=columns)
             for col in columns:
-                data[col][0] = np.add(data[col][0], x_max)
+                data[col][0] = np.add(data[col][0], x_max, dtype=np.int64)
                 x_ticks.append((max(data[col][0]) - x_max) / 2 + x_max)
                 x_max = max(data[col][0])
                 if log_base != 0:
