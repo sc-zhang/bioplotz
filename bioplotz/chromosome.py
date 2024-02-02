@@ -232,7 +232,7 @@ class _Chromosome(object):
                 color = mapper.to_rgba(val)
                 ax.add_patch(
                     plt.Rectangle((x, y), w, h, facecolor=color, edgecolor='none'))
-            clb = plt.colorbar(mapper, shrink=0.5)
+            clb = plt.colorbar(mapper, shrink=0.5, ax=ax)
         elif self.__value_type == 'color':
             for chrn, sp, ep, color in self.__bed_data:
                 y = sp
