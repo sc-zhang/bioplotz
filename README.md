@@ -1,12 +1,13 @@
-## Introduction
+# bioplotz: A package for plotting images for bioinformatics
+[![Latest PyPI version](https://img.shields.io/pypi/v/bioplotz.svg)](https://pypi.python.org/pypi/bioplotz)
+[![Downloads](https://static.pepy.tech/badge/bioplotz)](https://pepy.tech/project/bioplotz)
 
-This is a package for plotting some images for bioinformatics.
 
 ## Dependencies
 Python modules:  
-&ensp;&ensp;&ensp;&ensp;numpy  
-&ensp;&ensp;&ensp;&ensp;matplotlib  
-&ensp;&ensp;&ensp;&ensp;pandas  
+  - numpy  
+  - matplotlib  
+  - pandas  
 
 ## Installation
 ### Install via pip
