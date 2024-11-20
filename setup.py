@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='bioplotz',
-    version='0.1.0.dev13',
+    version='0.1.0.dev14',
     packages=['bioplotz'],
     url='https://github.com/sc-zhang/bioplotz',
     license='',
