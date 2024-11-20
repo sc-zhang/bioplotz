@@ -51,9 +51,11 @@ fig, ax = bp.manhattan(data, threshold=0, color=['orange', 'green'], threshold_l
 ### Chromosome Plot
 
 ```python
+import matplotlib.pyplot as plt
 import bioplotz as bp
 
-fig, ax, clb = bp.chromosome(chr_len_db, chr_order, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
+fig, ax, mapper = bp.chromosome(chr_len_db, chr_order, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
+plt.colorbar(mapper, ax=ax, shrink=0.5)
 ```
 | parameter            | value type                     | Optional | Default      | explain                                                                                                                                                                                                                                                                                                           |
 |----------------------|--------------------------------|----------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

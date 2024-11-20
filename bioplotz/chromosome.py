@@ -183,14 +183,18 @@ class _Chromosome(object):
         ax.set_xticks(xticks, xlabels, rotation=90 if self.__orientation == "vertical" else 0)
         ax.set_yticks(yticks, ylabels)
 
-        clb = None
-
+        if self.__orientation == "vertical":
+            plt.xlim(-.5, chr_cnt-.5)
+        else:
+            plt.ylim(-.5, chr_cnt-.5)
         if not self.__bed_data:
             return None
         if self.__chr_order:
             chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
         else:
             chr_idx_db = {chr_list[_]: _ for _ in range(chr_cnt)}
+
+        mapper = None
 
         if self.__value_type == 'numeric':
             # Init colormap
@@ -232,7 +236,7 @@ class _Chromosome(object):
                 color = mapper.to_rgba(val)
                 ax.add_patch(
                     plt.Rectangle((x, y), w, h, facecolor=color, edgecolor='none'))
-            clb = plt.colorbar(mapper, shrink=0.5, ax=ax)
+
         elif self.__value_type == 'color':
             for chrn, sp, ep, color in self.__bed_data:
                 y = sp
@@ -270,7 +274,7 @@ class _Chromosome(object):
                     plt.scatter(x, y, s=self.__s, color=color, marker=marker)
                 else:
                     plt.scatter(x, y, color=color, marker=marker)
-        return clb
+        return mapper
 
 
 def chromosome(chr_len_db: dict,
@@ -290,6 +294,6 @@ def chromosome(chr_len_db: dict,
 
     fig = plt.gcf()
     ax = plt.gca()
-    clb = plotter.plot(ax, fig, kwargs)
+    mapper = plotter.plot(ax, fig, kwargs)
 
-    return fig, ax, clb
+    return fig, ax, mapper
