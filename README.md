@@ -68,9 +68,10 @@ plt.colorbar(mapper, ax=ax, shrink=0.5)
 | **cmap**             | str                            | Yes      | gist_rainbow | **cmap** for colorbar                                                                                                                                                                                                                                                                                             |
 | **cmap_parts**       | int                            | Yes      | 100          | how many parts for splitting cmap                                                                                                                                                                                                                                                                                 |
 | **s**                | float or array-like, shape(n,) | Yes      | None         | same with parameter s use in **pyplot.scatter**                                                                                                                                                                                                                                                                   |
+| **fig_ratio**        | float                          | Yes      | None         | if plot with subplots, use this parameter to keep the arcs of chromosomes correct, for "vertical", this parameter should be fig_width/fig_height, otherwise, fig_height/fig_width                                                                                                                                 |
 | **other parameters** | value                          | Yes      | None         | same with parameters used in **pyplot.plot**                                                                                                                                                                                                                                                                      |
 
-- If value_type is numeric, the return value clb will be colorbar, else None
+- If value_type is numeric, the return value mapper will be a mappable which could be used with plt.colorbar, else None
 <table align="center">
 <tr>
 <td><img width=500 height=270 src="examples/chromosome.png"></td>

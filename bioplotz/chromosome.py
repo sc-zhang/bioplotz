@@ -14,7 +14,8 @@ class _Chromosome(object):
                  orientation: str = "vertical",
                  cmap: str = "gist_rainbow",
                  cmap_parts: int = 100,
-                 s: any = None):
+                 s: any = None,
+                 fig_ratio: float = None):
 
         self.__chr_len_db = chr_len_db
         self.__chr_order = chr_order
@@ -26,6 +27,7 @@ class _Chromosome(object):
             raise ValueError("value_type must in %s" % ','.join(list(self.__avail_types)))
 
         self.__s = s
+        self.__fig_ratio = fig_ratio
         self.__cmap = plt.get_cmap(cmap)
         if cmap_parts <= 0:
             raise ValueError("cmap_parts must larger than 0")
@@ -60,11 +62,14 @@ class _Chromosome(object):
                 max_height = self.__chr_len_db[_]
 
         # Plot chromosomes
-        fig_w, fig_h = fig.get_size_inches() * fig.dpi
-        if self.__orientation == 'horizontal':
-            ratio = max_height * 1. / chr_cnt * (fig_h * 1. / fig_w)
-        else:
-            ratio = max_height * 1. / chr_cnt * (fig_w * 1. / fig_h)
+        if not self.__fig_ratio:
+            fig_w, fig_h = fig.get_size_inches() * fig.dpi
+            if self.__orientation == 'horizontal':
+                self.__fig_ratio = fig_h * 1. / fig_w
+            else:
+                self.__fig_ratio = fig_w * 1. / fig_h
+        ratio = max_height * 1. / chr_cnt * self.__fig_ratio
+
         for i in range(chr_cnt):
             if self.__chr_order:
                 chrn = self.__chr_order[i]
@@ -286,8 +291,10 @@ def chromosome(chr_len_db: dict,
                cmap: str = "gist_rainbow",
                cmap_parts: int = 100,
                s: any = None,
+               fig_ratio: float = None,
                **kwargs):
-    plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, value_type, orientation, cmap, cmap_parts, s)
+    plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, value_type, orientation,
+                          cmap, cmap_parts, s, fig_ratio)
 
     if not plt:
         plt.figure()
