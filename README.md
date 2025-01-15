@@ -1,21 +1,26 @@
 # bioplotz: A package for plotting images for bioinformatics
+
 [![Latest PyPI version](https://img.shields.io/pypi/v/bioplotz.svg)](https://pypi.python.org/pypi/bioplotz)
 [![Downloads](https://static.pepy.tech/badge/bioplotz)](https://pepy.tech/project/bioplotz)
 
-
 ## Dependencies
-Python modules:  
-  - numpy  
-  - matplotlib  
-  - pandas  
+
+Python modules:
+
+- numpy
+- matplotlib
+- pandas
 
 ## Installation
+
 ### Install via pip
+
 ```bash
 pip install bioplotz
 ```
 
 ### Install from source code
+
 ```bash
 pip install git+https://github.com/sc-zhang/bioplotz.git --user
 ```
@@ -30,6 +35,7 @@ import bioplotz as bp
 fig, ax = bp.manhattan(data, threshold=0, color=['orange', 'green'], threshold_line_color='blue', log_base=0,
                        reverse=False, xtick_labels=True, ytick_labels=True, ax=None, marker='.', s=1, **kwargs)
 ```
+
 | parameter                | value type    | explain                                                                                                                                                                                                                                                                                                                                                              |
 |--------------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **data**                 | dict<br>list  | **dict** key: block name<br>&ensp;&ensp;&ensp;&ensp;value: [[x1,x2,...,xn], [y1,y2,...,yn]]<br>**list** is a list like: [[x1,y1], [x2, y2], ..., [xn, yn]]                                                                                                                                                                                                           |
@@ -54,9 +60,11 @@ fig, ax = bp.manhattan(data, threshold=0, color=['orange', 'green'], threshold_l
 import matplotlib.pyplot as plt
 import bioplotz as bp
 
-fig, ax, mapper = bp.chromosome(chr_len_db, chr_order, bed_data, centro_pos, value_type="numeric", orientation="vertical", **kwargs)
+fig, ax, mapper = bp.chromosome(chr_len_db, chr_order, bed_data, centro_pos, value_type="numeric",
+                                orientation="vertical", **kwargs)
 plt.colorbar(mapper, ax=ax, shrink=0.5)
 ```
+
 | parameter            | value type                     | Optional | Default      | explain                                                                                                                                                                                                                                                                                                           |
 |----------------------|--------------------------------|----------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **chr_len_db**       | dict                           | No       | -            | **key**: chromosome name<br>**value**: chromosome length                                                                                                                                                                                                                                                          |
@@ -72,6 +80,7 @@ plt.colorbar(mapper, ax=ax, shrink=0.5)
 | **other parameters** | value                          | Yes      | None         | same with parameters used in **pyplot.plot**                                                                                                                                                                                                                                                                      |
 
 - If value_type is numeric, the return value mapper will be a mappable which could be used with plt.colorbar, else None
+
 <table align="center">
 <tr>
 <td><img width=500 height=270 src="examples/chromosome.png"></td>
@@ -86,6 +95,7 @@ import bioplotz as bp
 
 fig, ax = bp.genecluster(gene_list)
 ```
+
 | parameter     | value type  | Optional | Default | explain                                                                                                                                          |
 |---------------|-------------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------|
 | **gene_list** | list        | No       | -       | **list**: 2-dimension list, like [[gene name, start pos, end pos, direct(+/-), color], ..., [gene name, start pos, end pos, direct(+/-), color]] |
@@ -93,7 +103,8 @@ fig, ax = bp.genecluster(gene_list)
 | **edgewidth** | int         | Yes      | 1       | edge width for all genes                                                                                                                         |
 | **lw**        | int         | Yes      | 3       | line width to show the genome backbone                                                                                                           |
 
-**Notice**, the best figsize should be (gene count, 1), for example: plt.figure(figsize=(16, 1)), and the bbox_inches parameter which in savefig should be 'tight'.
+**Notice**, the best figsize should be (gene count, 1), for example: plt.figure(figsize=(16, 1)), and the bbox_inches
+parameter which in savefig should be 'tight'.
 
 <table align="center">
 <tr>
@@ -108,21 +119,76 @@ import bioplotz as bp
 
 fig, ax = bp.multialign(data)
 ```
-| parameter                      | value type | Optional | Default | explain                                                           |
-|--------------------------------|------------|----------|---------|-------------------------------------------------------------------|
-| **data**                       | dict       | No       | -       | **key**: gene name<br>**value**: alignment sequence               |
-| **match_color**                | str        | Yes      | blue    | color of matched bases                                            |
-| **match_background_color**     | str        | Yes      | None    | background color of matched bases                                 |
-| **mismatch_color**             | str        | Yes      | red     | color of mismatched bases                                         |
-| **mismatch_background_color**  | str        | Yes      | None    | background color of mismatched bases                              |
-| **base_per_line**              | int        | Yes      | 80      | base count to display for each line                               |
-| **highlight_positions**        | list       | Yes      | None    | positions for highlighting, 0-base                                |
-| **highlight_color**            | str        | Yes      | green   | color of highlighting positions in highlight_positions            |
-| **highlight_background_color** | str        | Yes      | None    | background color of highlighting positions in highlight_positions |
-| ****kwargs**                   | any        | Yes      | -       | same with which use in ax.text                                    |
 
-**Notice**, the figsize should be (base_per_line/10, x) where x=align_length/base_per_line*gene_count/5, and the font must be  monospaced, 
+| parameter         | value type | Optional | Default | explain                                             |
+|-------------------|------------|----------|---------|-----------------------------------------------------|
+| **data**          | dict       | No       | -       | **key**: gene name<br>**value**: alignment sequence |
+| **base_per_line** | int        | Yes      | 80      | base count to display for each line                 |
+| **color_mode**    | string     | Yes      | match   | should be one of "match" and "base"                 |
+| **color_kws**     | dict       | Yes      | -       | based on color_mode, details could be found below   |
+| ****kwargs**      | any        | Yes      | -       | same with which use in ax.text                      |
+
+> **Details of color_kws**  
+> if color_mod is "match", the struct and default values of color_kws is like below:
+> ```python
+> # the default color of background colors is "white", 
+> # if there are not be set or set to None, 
+> # the default color of text colors is "black",
+> # if there are not be set or set to None
+> # user can overwrite any of them by set color_kws like:
+> # color_kws = {"match_color": "black", "match_background_color": "grey"} 
+> color_kws = {
+>     "match_color": 'blue',
+>     "match_background_color": None,
+>     "mismatch_color": 'red',
+>     "mismatch_background_color": None,
+>     "highlight_positions": None,
+>     "highlight_color": 'green',
+>     "highlight_background_color": None
+> }
+> ```
+> if color_mod is "base", the struct and default values of color_kws is like below:
+> ```python
+> # the default color of text is "black" and default color of background is set below
+> # user can overwrite color of any charactor or add color for new charactor like *, -, ?
+> # by set color_kws like:
+> # color_kws = {"base_color": {"-": "white}, "base_background_color": {"-", "yellow"}}
+>
+> color_kws = {
+>     "base_color": {},
+>     "base_background_color": {
+>         "A": "salmon", "a": "salmon",
+>         "T": "lightgreen", "t": "lightgreen",
+>         "G": "orange", "g": "orange",
+>         "C": "steelblue", "c": "steelblue",
+>         "U": "tomato", "u": "tomato",
+>         "F": "khaki", "f": "khaki",
+>         "D": "cadetblue", "d": "cadetblue",
+>         "N": "coral", "n": "coral",
+>         "E": "yellowgreen", "e": "yellowgreen",
+>         "Q": "plum", "q": "plum",
+>         "H": "orchid", "h": "orchid",
+>         "L": "darkseagreen", "l": "darkseagreen",
+>         "I": "yellow", "i": "yellow",
+>         "K": "lightseagreen", "k": "lightseagreen",
+>         "O": "darkkhaki", "o": "darkkhaki",
+>         "M": "palevioletred", "m": "palevioletred",
+>         "P": "sandybrown", "p": "sandybrown",
+>         "R": "palegreen", "r": "palegreen",
+>         "S": "peru", "s": "peru",
+>         "V": "violet", "v": "violet",
+>         "W": "mediumturquoise", "w": "mediumturquoise",
+>         "Y": "deepskyblue", "y": "deepskyblue"
+>     }
+> }
+> ```
+> colors for base:  
+> <img width=600 src="images/colors_for_base.png">
+
+**Notice**, the figsize should be (base_per_line/10, x) where x=align_length/base_per_line*gene_count/5, and the font
+must be monospaced,
 like "Courier New", that sometimes user need add codes as following.
+
 ```python
 import matplotlib as mpl
 import bioplotz as bp
@@ -130,10 +196,13 @@ import bioplotz as bp
 basefont = mpl.font_manager.FontProperties(fname="/path/to/font.ttf")
 fig, ax = bp.multialign(data, fontproperties=basefont)
 ```
+
 or
+
 ```python
 plt.rcParams['font.sans-serif'] = 'Courier New'
 ```
+
 <table align="center">
 <tr>
 <td><img width=600 src="examples/multialign.png"></td>

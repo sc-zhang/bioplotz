@@ -1,12 +1,13 @@
 from setuptools import setup
 
 from pathlib import Path
+
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='bioplotz',
-    version='0.1.0.dev15',
+    version='0.1.0.dev16',
     packages=['bioplotz'],
     url='https://github.com/sc-zhang/bioplotz',
     license='',

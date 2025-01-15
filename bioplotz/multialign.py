@@ -7,25 +7,73 @@ class _MultiAlign(object):
     def __init__(self,
                  data: dict,
                  base_per_line: int = 80,
-                 match_color: any = 'blue',
-                 match_background_color: any = None,
-                 mismatch_color: any = 'red',
-                 mismatch_background_color: any = None,
-                 highlight_positions: list = None,
-                 highlight_color: any = 'green',
-                 highlight_background_color: any = None):
+                 color_mode: str = 'match',
+                 color_kws: dict = None):
         self.__data = data
         self.__base_per_line = base_per_line
-        self.__match_color = match_color
-        self.__match_background_color = match_background_color
-        self.__mismatch_color = mismatch_color
-        self.__mismatch_background_color = mismatch_background_color
-        if highlight_positions:
-            self.__highlight_positions = set(highlight_positions)
+        self.__color_mode = color_mode
+        self.__color_kws = None
+
+        # set default values of sel.__color_kws
+        if self.__color_mode == "match":
+            self.__color_kws = {
+                "match_color": 'blue',
+                "match_background_color": None,
+                "mismatch_color": 'red',
+                "mismatch_background_color": None,
+                "highlight_positions": None,
+                "highlight_color": 'green',
+                "highlight_background_color": None
+            }
+        elif self.__color_mode == "base":
+            self.__color_kws = {
+                "base_color": {},
+                "base_background_color": {
+                    "A": "salmon", "a": "salmon",
+                    "T": "lightgreen", "t": "lightgreen",
+                    "G": "orange", "g": "orange",
+                    "C": "steelblue", "c": "steelblue",
+                    "U": "tomato", "u": "tomato",
+                    "F": "khaki", "f": "khaki",
+                    "D": "cadetblue", "d": "cadetblue",
+                    "N": "coral", "n": "coral",
+                    "E": "yellowgreen", "e": "yellowgreen",
+                    "Q": "plum", "q": "plum",
+                    "H": "orchid", "h": "orchid",
+                    "L": "darkseagreen", "l": "darkseagreen",
+                    "I": "yellow", "i": "yellow",
+                    "K": "lightseagreen", "k": "lightseagreen",
+                    "O": "darkkhaki", "o": "darkkhaki",
+                    "M": "palevioletred", "m": "palevioletred",
+                    "P": "sandybrown", "p": "sandybrown",
+                    "R": "palegreen", "r": "palegreen",
+                    "S": "peru", "s": "peru",
+                    "V": "violet", "v": "violet",
+                    "W": "mediumturquoise", "w": "mediumturquoise",
+                    "Y": "deepskyblue", "y": "deepskyblue"
+                }
+            }
+
         else:
-            self.__highlight_positions = None
-        self.__highlight_color = highlight_color
-        self.__highlight_background_color = highlight_background_color
+            raise ValueError("Value of color_mode should be \"match\" or \"base\"")
+
+        if color_kws:
+            if self.__color_mode == "match":
+                for key in color_kws:
+                    if key in self.__color_kws:
+                        self.__color_kws[key] = color_kws[key]
+                    else:
+                        raise KeyError("%s not support with color_kws in %s mode" % (key, self.__color_mode))
+            elif self.__color_mode == "base":
+                if "base_color" in color_kws:
+                    for key in color_kws["base_color"]:
+                        self.__color_kws["base_color"][key] = color_kws["base_color"][key]
+                if "base_background_color" in color_kws:
+                    for key in color_kws["base_background_color"]:
+                        self.__color_kws["base_background_color"][key] = color_kws["base_background_color"][key]
+
+        if "highlight_positions" in self.__color_kws and self.__color_kws["highlight_positions"]:
+            self.__color_kws["highlight_positions"] = set(self.__color_kws["highlight_positions"])
 
     @staticmethod
     def __rainbow_text(x, y, strings, colors, background_colors, ax=None, **kwargs):
@@ -98,25 +146,46 @@ class _MultiAlign(object):
             colors = ['black' for _ in range(len(divide_and_pos))]
             background_colors = ['white' for _ in range(len(divide_and_pos))]
             self.__rainbow_text(0, i * (seq_cnt + 2), list(divide_and_pos), colors, background_colors, **kwargs)
-            colors = [self.__match_color for _ in range(ep - sp)]
-            background_colors = [self.__match_background_color for _ in range(ep - sp)]
 
-            for k in range(sp, ep):
-                cur_set = set()
-                for j in sorted(self.__data):
-                    cur_set.add(self.__data[j][k])
-                if len(cur_set) > 1:
-                    colors[k - sp] = self.__mismatch_color
-                    background_colors[k - sp] = self.__mismatch_background_color
-                if self.__highlight_positions and k in self.__highlight_positions:
-                    colors[k - sp] = self.__highlight_color
-                    background_colors[k - sp] = self.__highlight_background_color
-            for j in range(seq_cnt):
-                gid = seq_list[j]
-                y_ticks.append(i * (seq_cnt + 2) + j + 1)
-                y_labels.append(gid)
-                self.__rainbow_text(0, i * (seq_cnt + 2) + j + 1, self.__data[gid][sp: ep],
-                                    colors, background_colors, **kwargs)
+            colors = ["black" for _ in range(ep - sp)]
+            background_colors = ["white" for _ in range(ep - sp)]
+
+            if self.__color_mode == "match":
+                for k in range(sp, ep):
+                    cur_set = set()
+                    for j in sorted(self.__data):
+                        cur_set.add(self.__data[j][k])
+                    if len(cur_set) > 1:
+                        colors[k - sp] = self.__color_kws["mismatch_color"]
+                        background_colors[k - sp] = self.__color_kws["mismatch_background_color"]
+                    else:
+                        colors[k - sp] = self.__color_kws["match_color"]
+                        background_colors[k - sp] = self.__color_kws["match_background_color"]
+                    if self.__color_kws["highlight_positions"] and k in self.__color_kws["highlight_positions"]:
+                        colors[k - sp] = self.__color_kws["highlight_color"]
+                        background_colors[k - sp] = self.__color_kws["highlight_background_color"]
+
+                for j in range(seq_cnt):
+                    gid = seq_list[j]
+                    y_ticks.append(i * (seq_cnt + 2) + j + 1)
+                    y_labels.append(gid)
+                    self.__rainbow_text(0, i * (seq_cnt + 2) + j + 1, self.__data[gid][sp: ep],
+                                        colors, background_colors, **kwargs)
+            elif self.__color_mode == "base":
+                for j in range(seq_cnt):
+                    gid = seq_list[j]
+                    y_ticks.append(i * (seq_cnt + 2) + j + 1)
+                    y_labels.append(gid)
+                    for k in range(sp, ep):
+                        colors[k - sp] = self.__color_kws["base_color"][self.__data[gid][k]] \
+                            if self.__data[gid][k] in self.__color_kws["base_color"] \
+                            else "black"
+                        background_colors[k - sp] = self.__color_kws["base_background_color"][self.__data[gid][k]] \
+                            if self.__data[gid][k] in self.__color_kws["base_background_color"] \
+                            else "white"
+                    self.__rainbow_text(0, i * (seq_cnt + 2) + j + 1, self.__data[gid][sp: ep],
+                                        colors, background_colors, **kwargs)
+
         ax.set_ylim(0, total_row_cnt)
         ax.set_xticks([])
         ax.invert_yaxis()
@@ -128,23 +197,13 @@ class _MultiAlign(object):
 
 def multialign(data: dict,
                base_per_line: int = 80,
-               match_color: any = 'blue',
-               match_background_color: any = None,
-               mismatch_color: any = 'red',
-               mismatch_background_color: any = None,
-               highlight_positions: list = None,
-               highlight_color: any = 'green',
-               highlight_background_color: any = None,
+               color_mode: str = "match",
+               color_kws: dict = None,
                **kwargs):
     plotter = _MultiAlign(data,
                           base_per_line,
-                          match_color,
-                          match_background_color,
-                          mismatch_color,
-                          mismatch_background_color,
-                          highlight_positions,
-                          highlight_color,
-                          highlight_background_color)
+                          color_mode,
+                          color_kws)
 
     if not plt:
         plt.figure()
