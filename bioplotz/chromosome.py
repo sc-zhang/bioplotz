@@ -12,6 +12,8 @@ class _Chromosome(object):
                  centro_db: dict = None,
                  value_type: str = "numeric",
                  orientation: str = "vertical",
+                 vmin: float = float('nan'),
+                 vmax: float = float('nan'),
                  cmap: str = "gist_rainbow",
                  cmap_parts: int = 100,
                  s: any = None,
@@ -28,6 +30,8 @@ class _Chromosome(object):
 
         self.__s = s
         self.__fig_ratio = fig_ratio
+        self._vmin = vmin
+        self._vmax = vmax
         self.__cmap = plt.get_cmap(cmap)
         if cmap_parts <= 0:
             raise ValueError("cmap_parts must larger than 0")
@@ -210,6 +214,10 @@ class _Chromosome(object):
                     max_val = val
                 if not min_val or val < min_val:
                     min_val = val
+            if not np.isnan(self._vmin):
+                min_val = self._vmin
+            if not np.isnan(self._vmax):
+                max_val = self._vmax
             norm = mpl.colors.Normalize(vmin=min_val, vmax=max_val, clip=True)
             mapper = mpl.cm.ScalarMappable(norm=norm, cmap=self.__cmap)
             mapper.set_array(np.arange(min_val, max_val, (max_val - min_val) * 1. / self.__cmap_parts))
@@ -238,6 +246,10 @@ class _Chromosome(object):
                 if self.__orientation == 'horizontal':
                     x, y = y, x
                     w, h = h, w
+                if val > max_val:
+                    val = max_val
+                if val < min_val:
+                    val = min_val
                 color = mapper.to_rgba(val)
                 ax.add_patch(
                     plt.Rectangle((x, y), w, h, facecolor=color, edgecolor='none'))
@@ -288,13 +300,15 @@ def chromosome(chr_len_db: dict,
                centro_db: dict = None,
                value_type: str = "numeric",
                orientation: str = "vertical",
+               vmin: float = float('nan'),
+               vmax: float = float('nan'),
                cmap: str = "gist_rainbow",
                cmap_parts: int = 100,
                s: any = None,
                fig_ratio: float = None,
                **kwargs):
     plotter = _Chromosome(chr_len_db, chr_order, bed_data, centro_db, value_type, orientation,
-                          cmap, cmap_parts, s, fig_ratio)
+                          vmin, vmax, cmap, cmap_parts, s, fig_ratio)
 
     if not plt:
         plt.figure()
