@@ -63,6 +63,29 @@ import bioplotz as bp
 fig, ax, mapper = bp.chromosome(chr_len_db, chr_order, bed_data, centro_pos, value_type="numeric",
                                 orientation="vertical", **kwargs)
 plt.colorbar(mapper, ax=ax, shrink=0.5)
+
+# for drawing telomeres, we need a dict of telomeres
+# the telomere dict is like below:
+# chr_telo_db = {"Chr1": "start", "Chr2": "end", "Chr3": "both"}
+# then add codes below
+left_telo_list = []
+right_telo_list = []
+for _ in range(len(chr_order)):
+    chrn = chr_order[_]
+    if not chrn in chr_telo_db:
+        continue
+    if chr_telo_db[chrn] == "start":
+        left_telo_list.append(_)
+    elif chr_telo_db[chrn] == "end":
+        right_telo_list.append(_)
+    elif chr_telo_db[chrn] == "both":
+        left_telo_list.append(_)
+        right_telo_list.append(_)
+
+# the value of color and s should be adjusted by user manually
+plt.scatter([_ for _ in left_telo_list], [0 for _ in left_telo_list], color="blue", s=50)
+plt.scatter([_ for _ in right_telo_list], [chr_len_db[chr_order[_]] for _ in right_telo_list], color="blue", s=50)
+
 ```
 
 | parameter            | value type                     | Optional | Default      | explain                                                                                                                                                                                                                                                                                                           |
