@@ -60,8 +60,8 @@ fig, ax = bp.manhattan(data, threshold=0, color=['orange', 'green'], threshold_l
 import matplotlib.pyplot as plt
 import bioplotz as bp
 
-fig, ax, mapper = bp.chromosome(chr_len_db, chr_order, bed_data, centro_pos, inner_value_type="numeric",
-                                orientation="vertical", **kwargs)
+fig, ax, mapper = bp.chromosome(chr_len_db, chr_order, inner_data=bed_data, centro_db=centro_pos,
+                                inner_value_type="numeric", orientation="vertical", **kwargs)
 plt.colorbar(mapper, ax=ax, shrink=0.5)
 
 # for drawing telomeres, we need a dict of telomeres
@@ -93,7 +93,7 @@ plt.scatter([_ for _ in right_telo_list], [chr_len_db[chr_order[_]] for _ in rig
 | **chr_len_db**       | dict                            | No       | -            | **key**: chromosome name<br>**value**: chromosome length                                                                                                                                                                                                                                                          |
 | **chr_order**        | list                            | Yes      | None         | **list**: the custom chromosome order, like: ["Chr1", "Chr3", "Chr2"]<br>must same with keys in chr_len                                                                                                                                                                                                           |
 | **inner_data**       | list                            | Yes      | None         | **list**: two dimension list, like: [[chrome name, start pos, end pos, value/color]]                                                                                                                                                                                                                              |
-| **outer_data         | list                            | Yes      | None         | same with **inner_data**                                                                                                                                                                                                                                                                                          |
+| **outer_data**       | list                            | Yes      | None         | same with **inner_data**                                                                                                                                                                                                                                                                                          |
 | **centro_pos**       | dict                            | Yes      | None         | **key**: chromosome name<br>**value**: middle position of centromere                                                                                                                                                                                                                                              |
 | **inner_value_type** | str                             | Yes      | numeric      | **numeric**: the 4th column of bed_data should be value<br>**color**: the 4th column of bed_data is color<br>**marker**: different with other two types, it need 5 columns, the 4th column of bed_data is marker, the 5th column is color (marker is same with the parameter which be used in **pyplot.scatter**) |
 | **outer_value_type** | str                             | Yes      | numeric      | similar with **inner_value_type**, but only support **numeric** and **marker**                                                                                                                                                                                                                                    |
