@@ -232,123 +232,122 @@ class _Chromosome(object):
             plt.xlim(-0.5, chr_cnt * fold - 0.5)
         else:
             plt.ylim(-0.5, chr_cnt * fold - 0.5)
-        if not self.__inner_data:
-            return None
+
         if self.__chr_order:
             chr_idx_db = {self.__chr_order[_]: _ for _ in range(chr_cnt)}
         else:
             chr_idx_db = {chr_list[_]: _ for _ in range(chr_cnt)}
 
         mapper = None
-
-        if self.__inner_value_type == "numeric":
-            # Init colormap
-            max_val = None
-            min_val = None
-            for _, _, _, val in self.__inner_data:
-                if not max_val or val > max_val:
-                    max_val = val
-                if not min_val or val < min_val:
-                    min_val = val
-            if not np.isnan(self.__inner_vmin):
-                min_val = self.__inner_vmin
-            if not np.isnan(self.__inner_vmax):
-                max_val = self.__inner_vmax
-            norm = mpl.colors.Normalize(vmin=min_val, vmax=max_val, clip=True)
-            mapper = mpl.cm.ScalarMappable(norm=norm, cmap=self.__cmap)
-            mapper.set_array(
-                np.arange(
-                    min_val, max_val, (max_val - min_val) * 1.0 / self.__cmap_parts
-                )
-            )
-
-            # Plot regions
-            for chrn, sp, ep, val in self.__inner_data:
-                y = sp
-                mid = (sp + ep) / 2.0
-                dist = 0
-
-                # if y locate at two ends or near centromeres, adjust width
-                if mid <= 0.35 * ratio:
-                    dist = (0.35 * ratio - mid) / ratio
-                elif mid >= self.__chr_len_db[chrn] - 0.35 * ratio:
-                    dist = (mid - (self.__chr_len_db[chrn] - 0.35 * ratio)) / ratio
-
-                if self.__centro_db and chrn in self.__centro_db:
-                    if (
-                            self.__centro_db[chrn] - 0.35 * ratio
-                            <= sp
-                            <= self.__centro_db[chrn]
-                    ):
-                        dist = (sp - self.__centro_db[chrn] + 0.35 * ratio) / ratio
-                    elif (
-                            self.__centro_db[chrn]
-                            <= ep
-                            <= self.__centro_db[chrn] + 0.35 * ratio
-                    ):
-                        dist = (self.__centro_db[chrn] + 0.35 * ratio - ep) / ratio
-
-                w = np.sqrt(0.1225 - dist ** 2) * 2
-                x = chr_idx_db[chrn] * fold - w / 2.0
-                h = ep - sp + 1
-                if self.__orientation == "horizontal":
-                    x, y = y, x
-                    w, h = h, w
-                if val > max_val:
-                    val = max_val
-                if val < min_val:
-                    val = min_val
-                color = mapper.to_rgba(val)
-                ax.add_patch(
-                    plt.Rectangle((x, y), w, h, facecolor=color, edgecolor="none")
+        if self.__inner_data:
+            if self.__inner_value_type == "numeric":
+                # Init colormap
+                max_val = None
+                min_val = None
+                for _, _, _, val in self.__inner_data:
+                    if not max_val or val > max_val:
+                        max_val = val
+                    if not min_val or val < min_val:
+                        min_val = val
+                if not np.isnan(self.__inner_vmin):
+                    min_val = self.__inner_vmin
+                if not np.isnan(self.__inner_vmax):
+                    max_val = self.__inner_vmax
+                norm = mpl.colors.Normalize(vmin=min_val, vmax=max_val, clip=True)
+                mapper = mpl.cm.ScalarMappable(norm=norm, cmap=self.__cmap)
+                mapper.set_array(
+                    np.arange(
+                        min_val, max_val, (max_val - min_val) * 1.0 / self.__cmap_parts
+                    )
                 )
 
-        elif self.__inner_value_type == "color":
-            for chrn, sp, ep, color in self.__inner_data:
-                y = sp
-                mid = (sp + ep) / 2.0
-                dist = 0
+                # Plot regions
+                for chrn, sp, ep, val in self.__inner_data:
+                    y = sp
+                    mid = (sp + ep) / 2.0
+                    dist = 0
 
-                # if y locate at two ends or near centromeres, adjust width
-                if mid <= 0.35 * ratio:
-                    dist = (0.35 * ratio - mid) / ratio
-                elif mid >= self.__chr_len_db[chrn] - 0.35 * ratio:
-                    dist = (mid - (self.__chr_len_db[chrn] - 0.35 * ratio)) / ratio
+                    # if y locate at two ends or near centromeres, adjust width
+                    if mid <= 0.35 * ratio:
+                        dist = (0.35 * ratio - mid) / ratio
+                    elif mid >= self.__chr_len_db[chrn] - 0.35 * ratio:
+                        dist = (mid - (self.__chr_len_db[chrn] - 0.35 * ratio)) / ratio
 
-                if self.__centro_db and chrn in self.__centro_db:
-                    if (
-                            self.__centro_db[chrn] - 0.35 * ratio
-                            <= sp
-                            <= self.__centro_db[chrn]
-                    ):
-                        dist = (sp - self.__centro_db[chrn] + 0.35 * ratio) / ratio
-                    elif (
-                            self.__centro_db[chrn]
-                            <= ep
-                            <= self.__centro_db[chrn] + 0.35 * ratio
-                    ):
-                        dist = (self.__centro_db[chrn] + 0.35 * ratio - ep) / ratio
+                    if self.__centro_db and chrn in self.__centro_db:
+                        if (
+                                self.__centro_db[chrn] - 0.35 * ratio
+                                <= sp
+                                <= self.__centro_db[chrn]
+                        ):
+                            dist = (sp - self.__centro_db[chrn] + 0.35 * ratio) / ratio
+                        elif (
+                                self.__centro_db[chrn]
+                                <= ep
+                                <= self.__centro_db[chrn] + 0.35 * ratio
+                        ):
+                            dist = (self.__centro_db[chrn] + 0.35 * ratio - ep) / ratio
 
-                w = np.sqrt(0.1225 - dist ** 2) * 2
+                    w = np.sqrt(0.1225 - dist ** 2) * 2
+                    x = chr_idx_db[chrn] * fold - w / 2.0
+                    h = ep - sp + 1
+                    if self.__orientation == "horizontal":
+                        x, y = y, x
+                        w, h = h, w
+                    if val > max_val:
+                        val = max_val
+                    if val < min_val:
+                        val = min_val
+                    color = mapper.to_rgba(val)
+                    ax.add_patch(
+                        plt.Rectangle((x, y), w, h, facecolor=color, edgecolor="none")
+                    )
 
-                x = chr_idx_db[chrn] * fold - w / 2.0
-                h = ep - sp + 1
-                if self.__orientation == "horizontal":
-                    x, y = y, x
-                    w, h = h, w
-                ax.add_patch(
-                    plt.Rectangle((x, y), w, h, facecolor=color, edgecolor="none")
-                )
-        elif self.__inner_value_type == "marker":
-            for chrn, sp, ep, marker, color in self.__inner_data:
-                x = chr_idx_db[chrn] * fold
-                y = sp
-                if self.__orientation == "horizontal":
-                    x, y = y, x
-                if self.__inner_size:
-                    plt.scatter(x, y, s=self.__inner_size, color=color, marker=marker)
-                else:
-                    plt.scatter(x, y, color=color, marker=marker)
+            elif self.__inner_value_type == "color":
+                for chrn, sp, ep, color in self.__inner_data:
+                    y = sp
+                    mid = (sp + ep) / 2.0
+                    dist = 0
+
+                    # if y locate at two ends or near centromeres, adjust width
+                    if mid <= 0.35 * ratio:
+                        dist = (0.35 * ratio - mid) / ratio
+                    elif mid >= self.__chr_len_db[chrn] - 0.35 * ratio:
+                        dist = (mid - (self.__chr_len_db[chrn] - 0.35 * ratio)) / ratio
+
+                    if self.__centro_db and chrn in self.__centro_db:
+                        if (
+                                self.__centro_db[chrn] - 0.35 * ratio
+                                <= sp
+                                <= self.__centro_db[chrn]
+                        ):
+                            dist = (sp - self.__centro_db[chrn] + 0.35 * ratio) / ratio
+                        elif (
+                                self.__centro_db[chrn]
+                                <= ep
+                                <= self.__centro_db[chrn] + 0.35 * ratio
+                        ):
+                            dist = (self.__centro_db[chrn] + 0.35 * ratio - ep) / ratio
+
+                    w = np.sqrt(0.1225 - dist ** 2) * 2
+
+                    x = chr_idx_db[chrn] * fold - w / 2.0
+                    h = ep - sp + 1
+                    if self.__orientation == "horizontal":
+                        x, y = y, x
+                        w, h = h, w
+                    ax.add_patch(
+                        plt.Rectangle((x, y), w, h, facecolor=color, edgecolor="none")
+                    )
+            elif self.__inner_value_type == "marker":
+                for chrn, sp, ep, marker, color in self.__inner_data:
+                    x = chr_idx_db[chrn] * fold
+                    y = sp
+                    if self.__orientation == "horizontal":
+                        x, y = y, x
+                    if self.__inner_size:
+                        plt.scatter(x, y, s=self.__inner_size, color=color, marker=marker)
+                    else:
+                        plt.scatter(x, y, color=color, marker=marker)
 
         if self.__outer_data:
             if self.__outer_value_type == "numeric":
@@ -374,7 +373,7 @@ class _Chromosome(object):
                     X = []
                     Y = []
                     offset = chr_idx_db[chrn] * fold + 0.65
-                    for x, y in sorted(converted_data[chrn], key=lambda x: x[1]):
+                    for x, y in sorted(converted_data[chrn], key=lambda _: _[1]):
                         if x < min_val:
                             X.append(min_val * ratio + offset)
                         elif x > max_val:
