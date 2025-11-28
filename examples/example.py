@@ -2,7 +2,7 @@ import bioplotz as bp
 import random
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(20, 20), dpi=100)
+plt.figure(figsize=(20, 10), dpi=100)
 
 # DEMO for manhattan plot
 data = {
@@ -60,17 +60,32 @@ for i in range(1000):
     ):
         continue
     inner_data.append([chrn, sp, ep, random.random()])
+    outer_data2.append([chrn, sp, ep, "*", "red"])
+
+for i in range(10000):
+    chrn = "Chr%02d" % (random.randint(1, 16))
+    sp = random.randint(0, int(chr_len_db[chrn]))
+    ep = sp + random.randint(int(1e3), int(1e4))
+    if ep >= chr_len_db[chrn] - 1e3:
+        continue
+    if (
+            centro_db[chrn] - 1e3 <= sp <= centro_db[chrn] + 1e3
+            or centro_db[chrn] - 1e3 <= ep <= centro_db[chrn] + 1e3
+            or sp <= centro_db[chrn] <= ep
+    ):
+        continue
     outer_data.append([chrn, sp, ep, random.random()])
-    outer_data2.append([chrn, sp, ep, "*", "orange"])
 
 plt.subplot(233)
 bp.chromosome(
     chr_len_db,
     inner_data=inner_data,
-    outer_data=outer_data,
+    outer_data=outer_data2,
+    outer_value_type="marker",
     centro_db=centro_db,
     orientation="horizontal",
     cmap="Blues",
+    outer_size=20,
 )
 plt.xticks(fontsize=15)
 plt.yticks(fontsize=15)
@@ -78,11 +93,13 @@ plt.subplot(234)
 bp.chromosome(
     chr_len_db,
     inner_data=inner_data,
-    outer_data=outer_data2,
-    outer_value_type="marker",
+    outer_data=outer_data,
     centro_db=centro_db,
     orientation="vertical",
+    outer_line_color="orange",
     cmap="Greens",
+    outer_line_style="-",
+    outer_size=1,
 )
 plt.xticks(fontsize=15)
 plt.yticks(fontsize=15)
@@ -101,6 +118,7 @@ for i in range(3):
         cur_seq[random.randint(0, 99)] = base[random.randint(0, 4)]
     aln_db[gid] = "".join(cur_seq)
 
+plt.rcParams['font.sans-serif'] = 'Courier New'
 bp.multialign(aln_db)
 
 plt.show()
